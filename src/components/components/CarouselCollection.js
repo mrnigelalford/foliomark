@@ -97,7 +97,7 @@ export default class Responsive extends Component {
       <div className="nft">
         <Slider {...settings}>
           {this.state.collection.map((coll, index) => (
-            <CustomSlide className="itm" index={1}>
+            <CustomSlide className="itm" index={index}>
               <div className="nft_coll">
                 <div className="nft_wrap">
                   <span>

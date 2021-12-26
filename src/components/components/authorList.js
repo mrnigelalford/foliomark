@@ -1,153 +1,114 @@
 import React from 'react';
+import { Component } from 'react';
 
-const authorlist= () => (
-  <div>
-    <ol className="author_list">
-      <li>                                    
-          <div className="author_list_pp">
-              <span onClick={()=> window.open("", "_self")}>
-                  <img className="lazy" src="./img/author/author-1.jpg" alt=""/>
+export default class authorlist extends Component {
+  dummyData = [
+    {
+      img: './img/author/author-1.jpg',
+      name: 'Monica Lucas',
+      revenue: 100,
+      token: 'xtz',
+    },
+    {
+      img: './img/author/author-2.jpg',
+      name: 'Mamie Barnett',
+      revenue: 100,
+      token: 'xtz',
+    },
+    {
+      img: './img/author/author-3.jpg',
+      name: 'Nicholas Daniels',
+      revenue: 100,
+      token: 'xtz',
+    },
+    {
+      img: './img/author/author-4.jpg',
+      name: 'Lori Hart',
+      revenue: 100,
+      token: 'xtz',
+    },
+    {
+      img: './img/author/author-5.jpg',
+      name: 'Jimmy Wright',
+      revenue: 100,
+      token: 'xtz',
+    },
+    {
+      img: './img/author/author-6.jpg',
+      name: 'Karla Sharp',
+      revenue: 100,
+      token: 'xtz',
+    },
+    {
+      img: './img/author/author-7.jpg',
+      name: 'Gayle Hicks',
+      revenue: 100,
+      token: 'xtz',
+    },
+    {
+      img: './img/author/author-8.jpg',
+      name: 'Claude Banks',
+      revenue: 100,
+      token: 'xtz',
+    },
+    {
+      img: './img/author/author-9.jpg',
+      name: 'Franklin Greer',
+      revenue: 100,
+      token: 'xtz',
+    },
+    {
+      img: './img/author/author-10.jpg',
+      name: 'Stacy Long',
+      revenue: 100,
+      token: 'xtz',
+    },
+    {
+      img: './img/author/author-11.jpg',
+      name: 'Ida Chapman',
+      revenue: 100,
+      token: 'xtz',
+    },
+    {
+      img: './img/author/author-12.jpg',
+      name: 'Fred Ryan',
+      revenue: 100,
+      token: 'xtz',
+    },
+  ];
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      authors: this.dummyData.slice(0, 12),
+      height: 0,
+    };
+  }
+  render() {
+    return (
+      <div>
+        <ol className="author_list">
+          {this.state.authors.map((author, index) => (
+            <li>
+              <div key={index} className="author_list_pp">
+                <span onClick={() => window.open('', '_self')}>
+                  <img className="lazy" src={author.img} alt="" />
                   <i className="fa fa-check"></i>
-              </span>
-          </div>                                    
-          <div className="author_list_info">
-              <span onClick={()=> window.open("", "_self")}>Monica Lucas</span>
-              <span className="bot">3.2 ETH</span>
-          </div>
-      </li>
-      <li>
-          <div className="author_list_pp">
-              <span onClick={()=> window.open("", "_self")}>                                    
-                  <img className="lazy" src="./img/author/author-2.jpg" alt=""/>
-                  <i className="fa fa-check"></i>
-              </span>
-          </div>
-          <div className="author_list_info">
-              <span onClick={()=> window.open("", "_self")}>Mamie Barnett</span>
-              <span className="bot">2.8 ETH</span>
-          </div>
-      </li>
-      <li>
-          <div className="author_list_pp">
-              <span onClick={()=> window.open("", "_self")}>                                    
-                  <img className="lazy" src="./img/author/author-3.jpg" alt=""/>
-                  <i className="fa fa-check"></i>
-              </span>
-          </div>
-          <div className="author_list_info">
-              <span onClick={()=> window.open("", "_self")}>Nicholas Daniels</span>
-              <span className="bot">2.5 ETH</span>
-          </div>
-      </li>
-      <li>
-          <div className="author_list_pp">
-              <span onClick={()=> window.open("", "_self")}>                                    
-                  <img className="lazy" src="./img/author/author-4.jpg" alt=""/>
-                  <i className="fa fa-check"></i>
-              </span>
-          </div>
-          <div className="author_list_info">
-              <span onClick={()=> window.open("", "_self")}>Lori Hart</span>
-              <span className="bot">2.2 ETH</span>
-          </div>
-      </li>
-      <li>
-          <div className="author_list_pp">
-              <span onClick={()=> window.open("", "_self")}>                                    
-                  <img className="lazy" src="./img/author/author-5.jpg" alt=""/>
-                  <i className="fa fa-check"></i>
-              </span>
-          </div>
-          <div className="author_list_info">
-              <span onClick={()=> window.open("", "_self")}>Jimmy Wright</span>
-              <span className="bot">1.9 ETH</span>
-          </div>
-      </li>
-      <li>
-          <div className="author_list_pp">
-              <span onClick={()=> window.open("", "_self")}>                                    
-                  <img className="lazy" src="./img/author/author-6.jpg" alt=""/>
-                  <i className="fa fa-check"></i>
-              </span>
-          </div>
-          <div className="author_list_info">
-              <span onClick={()=> window.open("", "_self")}>Karla Sharp</span>
-              <span className="bot">1.6 ETH</span>
-          </div>
-      </li>
-      <li>
-          <div className="author_list_pp">
-              <span onClick={()=> window.open("", "_self")}>                                    
-                  <img className="lazy" src="./img/author/author-7.jpg" alt=""/>
-                  <i className="fa fa-check"></i>
-              </span>
-          </div>
-          <div className="author_list_info">
-              <span onClick={()=> window.open("", "_self")}>Gayle Hicks</span>
-              <span className="bot">1.5 ETH</span>
-          </div>
-      </li>
-      <li>
-          <div className="author_list_pp">
-              <span onClick={()=> window.open("", "_self")}>                                    
-                  <img className="lazy" src="./img/author/author-8.jpg" alt=""/>
-                  <i className="fa fa-check"></i>
-              </span>
-          </div>
-          <div className="author_list_info">
-              <span onClick={()=> window.open("", "_self")}>Claude Banks</span>
-              <span className="bot">1.3 ETH</span>
-          </div>
-      </li>
-      <li>
-          <div className="author_list_pp">
-              <span onClick={()=> window.open("", "_self")}>                                    
-                  <img className="lazy" src="./img/author/author-9.jpg" alt=""/>
-                  <i className="fa fa-check"></i>
-              </span>
-          </div>
-          <div className="author_list_info">
-              <span onClick={()=> window.open("", "_self")}>Franklin Greer</span>
-              <span className='bot'>0.9 ETH</span>
-          </div>
-      </li>
-      <li>
-          <div className="author_list_pp">
-              <span onClick={()=> window.open("", "_self")}>                                    
-                  <img className="lazy" src="./img/author/author-10.jpg" alt=""/>
-                  <i className="fa fa-check"></i>
-              </span>
-          </div>
-          <div className="author_list_info">
-              <span onClick={()=> window.open("", "_self")}>Stacy Long</span>
-              <span className='bot'>0.8 ETH</span>
-          </div>
-      </li>
-      <li>
-          <div className="author_list_pp">
-              <span onClick={()=> window.open("", "_self")}>                                    
-                  <img className="lazy" src="./img/author/author-11.jpg" alt=""/>
-                  <i className="fa fa-check"></i>
-              </span>
-          </div>
-          <div className="author_list_info">
-              <span onClick={()=> window.open("", "_self")}>Ida Chapman</span>
-              <span className='bot'>0.6 ETH</span>
-          </div>
-      </li>
-      <li>
-          <div className="author_list_pp">
-              <span onClick={()=> window.open("", "_self")}>                                    
-                  <img className="lazy" src="./img/author/author-12.jpg" alt=""/>
-                  <i className="fa fa-check"></i>
-              </span>
-          </div>
-          <div className="author_list_info">
-              <span onClick={()=> window.open("", "_self")}>Fred Ryan</span>
-              <span className='bot'>0.5 eth</span>
-          </div>
-      </li>
-    </ol>
-  </div>
-);
-export default authorlist;
+                </span>
+              </div>
+              <div className="author_list_info">
+                <span onClick={() => window.open('', '_self')}>
+                  {author.name}
+                </span>
+                <span className="bot">
+                  {author.revenue}
+                  {author.token}
+                </span>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    );
+  }
+}
