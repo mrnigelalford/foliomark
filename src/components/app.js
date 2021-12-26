@@ -4,8 +4,6 @@ import ScrollToTopBtn from './menu/ScrollToTop';
 import Header from './menu/header';
 import Home from './pages/home';
 import Home1 from './pages/home1';
-import Home2 from './pages/home2';
-import Home3 from './pages/home3';
 import Explore from './pages/explore';
 import Explore2 from './pages/explore2';
 import Rangking from './pages/rangking';
@@ -44,36 +42,32 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 export const ScrollTop = ({ children, location }) => {
-  React.useEffect(() => window.scrollTo(0,0), [location])
-  return children
-}
+  React.useEffect(() => window.scrollTo(0, 0), [location]);
+  return children;
+};
 
 const PosedRouter = ({ children }) => (
   <Location>
     {({ location }) => (
-      <div id='routerhang'>
+      <div id="routerhang">
         <div key={location.key}>
-          <Router location={location}>
-            {children}
-          </Router>
+          <Router location={location}>{children}</Router>
         </div>
       </div>
     )}
   </Location>
 );
 
-const app= () => (
+const app = () => (
   <div className="wraper">
-  <GlobalStyles />
-    <Header/>
-      <PosedRouter>
+    <GlobalStyles />
+    <Header />
+    <PosedRouter>
       <ScrollTop path="/">
         <Home exact path="/">
           <Redirect to="/home" />
         </Home>
-        <Home1 path="/home1" />
-        <Home2 path="/home2" />
-        <Home3 path="/home3" />
+        <Home1 path="/home" />
         <Explore path="/explore" />
         <Explore2 path="/explore2" />
         <Rangking path="/rangking" />
@@ -102,10 +96,9 @@ const app= () => (
         <Alerts path="/alerts" />
         <Progressbar path="/progressbar" />
         <Tabs path="/tabs" />
-        </ScrollTop>
-      </PosedRouter>
+      </ScrollTop>
+    </PosedRouter>
     <ScrollToTopBtn />
-    
   </div>
 );
 export default app;
