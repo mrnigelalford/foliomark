@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import Breakpoint, {
   BreakpointProvider,
   setDefaultBreakpoints,
-} from "react-socks";
-import { Col, header } from "react-bootstrap";
-import { Link } from "@reach/router";
-import useOnclickOutside from "react-cool-onclickoutside";
+} from 'react-socks';
+import { Col, header } from 'react-bootstrap';
+import { Link } from '@reach/router';
+import useOnclickOutside from 'react-cool-onclickoutside';
 
 setDefaultBreakpoints([{ xs: 0 }, { l: 1199 }, { xl: 1200 }]);
 
@@ -16,7 +16,7 @@ const NavLink = (props) => (
       // the object returned here is passed to the
       // anchor element's props
       return {
-        className: isCurrent ? "active" : "non-active",
+        className: isCurrent ? 'active' : 'non-active',
       };
     }}
   />
@@ -27,28 +27,28 @@ const Header = function () {
   const [openMenu1, setOpenMenu1] = React.useState(false);
   const [openMenu2, setOpenMenu2] = React.useState(false);
   const [openMenu3, setOpenMenu3] = React.useState(false);
-  const handleBtnClick = (): void => {
+  const handleBtnClick = () => {
     setOpenMenu(!openMenu);
   };
-  const handleBtnClick1 = (): void => {
+  const handleBtnClick1 = () => {
     setOpenMenu1(!openMenu1);
   };
-  const handleBtnClick2 = (): void => {
+  const handleBtnClick2 = () => {
     setOpenMenu2(!openMenu2);
   };
-  const handleBtnClick3 = (): void => {
+  const handleBtnClick3 = () => {
     setOpenMenu3(!openMenu3);
   };
-  const closeMenu = (): void => {
+  const closeMenu = () => {
     setOpenMenu(false);
   };
-  const closeMenu1 = (): void => {
+  const closeMenu1 = () => {
     setOpenMenu1(false);
   };
-  const closeMenu2 = (): void => {
+  const closeMenu2 = () => {
     setOpenMenu2(false);
   };
-  const closeMenu3 = (): void => {
+  const closeMenu3 = () => {
     setOpenMenu3(false);
   };
   const ref = useOnclickOutside(() => {
@@ -66,24 +66,24 @@ const Header = function () {
 
   const [showmenu, btn_icon] = useState(false);
   useEffect(() => {
-    const header = document.getElementById("myHeader");
-    const totop = document.getElementById("scroll-to-top");
+    const header = document.getElementById('myHeader');
+    const totop = document.getElementById('scroll-to-top');
     const sticky = header.offsetTop;
-    const scrollCallBack = window.addEventListener("scroll", () => {
+    const scrollCallBack = window.addEventListener('scroll', () => {
       btn_icon(false);
       if (window.pageYOffset > sticky) {
-        header.classList.add("sticky");
-        totop.classList.add("show");
+        header.classList.add('sticky');
+        totop.classList.add('show');
       } else {
-        header.classList.remove("sticky");
-        totop.classList.remove("show");
+        header.classList.remove('sticky');
+        totop.classList.remove('show');
       }
       if (window.pageYOffset > sticky) {
         closeMenu();
       }
     });
     return () => {
-      window.removeEventListener("scroll", scrollCallBack);
+      window.removeEventListener('scroll', scrollCallBack);
     };
   }, []);
   return (
@@ -139,8 +139,8 @@ const Header = function () {
                                 to=" "
                                 onClick={() =>
                                   window.open(
-                                    "http://gigaland.grey.on3-step.com",
-                                    "_self"
+                                    'http://gigaland.grey.on3-step.com',
+                                    '_self'
                                   )
                                 }
                               >
@@ -150,8 +150,8 @@ const Header = function () {
                                 to=" "
                                 onClick={() =>
                                   window.open(
-                                    "http://gigaland.retro.on3-step.com",
-                                    "_self"
+                                    'http://gigaland.retro.on3-step.com',
+                                    '_self'
                                   )
                                 }
                               >
@@ -420,8 +420,8 @@ const Header = function () {
                                 to=" "
                                 onClick={() =>
                                   window.open(
-                                    "http://gigaland.grey.on3-step.com",
-                                    "_self"
+                                    'http://gigaland.grey.on3-step.com',
+                                    '_self'
                                   )
                                 }
                               >
@@ -431,8 +431,8 @@ const Header = function () {
                                 to=" "
                                 onClick={() =>
                                   window.open(
-                                    "http://gigaland.retro.on3-step.com",
-                                    "_self"
+                                    'http://gigaland.retro.on3-step.com',
+                                    '_self'
                                   )
                                 }
                               >
