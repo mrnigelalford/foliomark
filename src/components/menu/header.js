@@ -94,13 +94,17 @@ const Header = function () {
             <div className="navbar-title navbar-item">
               <NavLink to="/">
                 <img
-                  src="./img/logo.png"
+                  src="https://github.com/mrnigelalford/foliomark/blob/38baee707d6f50b321de110f67ea1e850e977b7c/public/img/logo.png?raw=true"
                   className="img-fluid d-block"
                   alt="#"
                 />
-                <img src="./img/logo-2.png" className="img-fluid d-3" alt="#" />
                 <img
-                  src="./img/logo-light.png"
+                  src="https://github.com/mrnigelalford/foliomark/blob/38baee707d6f50b321de110f67ea1e850e977b7c/public/img/logo-2.png?raw=true"
+                  className="img-fluid d-3"
+                  alt="#"
+                />
+                <img
+                  src="https://github.com/mrnigelalford/foliomark/blob/38baee707d6f50b321de110f67ea1e850e977b7c/public/img/logo-2-light.png?raw=true"
                   className="img-fluid d-none"
                   alt="#"
                 />

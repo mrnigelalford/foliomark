@@ -3,7 +3,6 @@ import { Router, Location, Redirect } from '@reach/router';
 import ScrollToTopBtn from './menu/ScrollToTop';
 import Header from './menu/header';
 import Home from './pages/home';
-import Home1 from './pages/home1';
 import Explore from './pages/explore';
 import Explore2 from './pages/explore2';
 import Rangking from './pages/rangking';
@@ -67,14 +66,13 @@ const app = () => (
         <Home exact path="/">
           <Redirect to="/home" />
         </Home>
-        <Home1 path="/home" />
         <Explore path="/explore" />
         <Explore2 path="/explore2" />
         <Rangking path="/rangking" />
         <Auction path="/Auction" />
         <Helpcenter path="/helpcenter" />
         <Colection path="/colection" />
-        <ItemDetail path="/ItemDetail" />
+        <ItemDetail path="/ItemDetail/:id" />
         <Author path="/Author" />
         <Wallet path="/wallet" />
         <Login path="/login" />

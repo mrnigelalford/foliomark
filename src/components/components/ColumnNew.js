@@ -1,3 +1,4 @@
+import { Link } from '@reach/router';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Clock from './Clock';
@@ -11,51 +12,78 @@ const Outer = styled.div`
   border-radius: 8px;
 `;
 
+export const dummyData = [
+  {
+    deadline: 'December, 30, 2021',
+    authorLink: '#',
+    nftLink: '#',
+    bidLink: '#',
+    authorImg:
+      'https://github.com/mrnigelalford/foliomark/blob/38baee707d6f50b321de110f67ea1e850e977b7c/public/img/author/author-1.jpg?raw=true',
+    previewImg:
+      'https://github.com/mrnigelalford/foliomark/blob/38baee707d6f50b321de110f67ea1e850e977b7c/public/img/items/static-1.jpg?raw=true',
+    fullImg:
+      'https://github.com/mrnigelalford/foliomark/blob/38baee707d6f50b321de110f67ea1e850e977b7c/public/img/items/big-2.jpg?raw=true',
+    title: 'Pinky Ocean',
+    price: '0.08 ETH',
+    bid: '1/20',
+    likes: 50,
+    id: '1234abc',
+    type: 'Art',
+    views: 250,
+    description:
+      'Sed ut perspiciatis unde omnis iste natus error sit </br> voluptatem </br> accusantium doloremque laudantium, totam rem aperiam, eaque ipsa </br> quae ab </br>illo inventore veritatis et quasi architecto beatae </br> vitae dicta sunt </br> explicabo.',
+    authorName: 'Monica Lucas',
+    bids: [
+      {
+        authorImg:
+          'https://github.com/mrnigelalford/foliomark/blob/38baee707d6f50b321de110f67ea1e850e977b7c/public/img/author/author-2.jpg?raw=true',
+        authorName: 'Steve Smith',
+        bidDate: new Date().toString(),
+        bid: 100,
+        token: 'xtz',
+      },
+      {
+        authorImg:
+          'https://github.com/mrnigelalford/foliomark/blob/38baee707d6f50b321de110f67ea1e850e977b7c/public/img/author/author-3.jpg?raw=true',
+        authorName: 'Shoebly Jubly',
+        bidDate: new Date().toString(),
+        bid: 200,
+        token: 'xtz',
+      },
+    ],
+  },
+  {
+    deadline: '',
+    authorLink: '#',
+    nftLink: '#',
+    bidLink: '#',
+    authorImg: './img/author/author-10.jpg',
+    previewImg: './img/items/static-2.jpg',
+    title: 'Deep Sea Phantasy',
+    price: '0.06 ETH',
+    bid: '1/22',
+    likes: 80,
+  },
+  {
+    deadline: '',
+    authorLink: '#',
+    nftLink: '#',
+    bidLink: '#',
+    authorImg: './img/author/author-11.jpg',
+    previewImg: './img/items/static-3.jpg',
+    title: 'Rainbow Style',
+    price: '0.05 ETH',
+    bid: '1/11',
+    likes: 97,
+  },
+];
+
 export default class Responsive extends Component {
-  dummyData = [
-    {
-      deadline: 'December, 30, 2021',
-      authorLink: '#',
-      nftLink: '#',
-      bidLink: '#',
-      authorImg: './img/author/author-1.jpg',
-      previewImg: './img/items/static-1.jpg',
-      title: 'Pinky Ocean',
-      price: '0.08 ETH',
-      bid: '1/20',
-      likes: 50,
-    },
-
-    {
-      deadline: '',
-      authorLink: '#',
-      nftLink: '#',
-      bidLink: '#',
-      authorImg: './img/author/author-10.jpg',
-      previewImg: './img/items/static-2.jpg',
-      title: 'Deep Sea Phantasy',
-      price: '0.06 ETH',
-      bid: '1/22',
-      likes: 80,
-    },
-    {
-      deadline: '',
-      authorLink: '#',
-      nftLink: '#',
-      bidLink: '#',
-      authorImg: './img/author/author-11.jpg',
-      previewImg: './img/items/static-3.jpg',
-      title: 'Rainbow Style',
-      price: '0.05 ETH',
-      bid: '1/11',
-      likes: 97,
-    },
-  ];
-
   constructor(props) {
     super(props);
     this.state = {
-      nfts: this.dummyData.slice(0, 8),
+      nfts: dummyData.slice(0, 8),
       height: 0,
     };
     this.onImgLoad = this.onImgLoad.bind(this);
@@ -66,7 +94,7 @@ export default class Responsive extends Component {
     let start = nftState.length;
     let end = nftState.length + 4;
     this.setState({
-      nfts: [...nftState, ...this.dummyData.slice(start, end)],
+      nfts: [...nftState, ...dummyData.slice(start, end)],
     });
   };
 
@@ -115,9 +143,9 @@ export default class Responsive extends Component {
                 </Outer>
               </div>
               <div className="nft__item_info">
-                <span onClick={() => window.open(nft.nftLink, '_self')}>
-                  <h4>{nft.title}</h4>
-                </span>
+                <h4 onClick={() => console.log('ding')}>
+                  <Link to={`/ItemDetail/${nft.id}`}>{nft.title}</Link>
+                </h4>
                 <div className="nft__item_price">
                   {nft.price}
                   <span>{nft.bid}</span>
@@ -135,7 +163,7 @@ export default class Responsive extends Component {
             </div>
           </div>
         ))}
-        {this.state.nfts.length !== this.dummyData.length && (
+        {this.state.nfts.length !== dummyData.length && (
           <div className="col-lg-12">
             <div className="spacer-single"></div>
             <span
