@@ -2,8 +2,8 @@ import React from 'react';
 import Clock from '../components/Clock';
 import Footer from '../components/footer';
 import { createGlobalStyle } from 'styled-components';
-import { dummyData } from '../components/ColumnNew';
 import { useParams } from '@reach/router';
+import { mockItems } from '../../data/mockData';
 
 const GlobalStyles = createGlobalStyle`
   header#myHeader.navbar.white {
@@ -25,7 +25,7 @@ const GlobalStyles = createGlobalStyle`
 
 const ItemDetail = () => {
   const { id } = useParams();
-  const item = dummyData.filter((data) => data.id === id)[0];
+  const item = mockItems.filter((data) => data.id === id)[0];
 
   const [openMenu, setOpenMenu] = React.useState(true);
   const [openMenu1, setOpenMenu1] = React.useState(false);

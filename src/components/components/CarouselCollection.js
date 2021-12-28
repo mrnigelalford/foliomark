@@ -10,89 +10,64 @@ class CustomSlide extends Component {
   }
 }
 
+const settings = {
+  infinite: false,
+  speed: 500,
+  slidesToShow: 4,
+  slidesToScroll: 1,
+  initialSlide: 0,
+  responsive: [
+    {
+      breakpoint: 1900,
+      settings: {
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        infinite: true,
+      },
+    },
+    {
+      breakpoint: 1600,
+      settings: {
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        infinite: true,
+      },
+    },
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        infinite: true,
+      },
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        initialSlide: 2,
+      },
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: true,
+      },
+    },
+  ],
+};
+
 export default class Responsive extends Component {
-  dummyData = [
-    {
-      collectionImg: './img/collections/coll-1.jpg',
-      authorImg: './img/author/author-1.jpg',
-      title: 'Abstractions',
-      description: 'ERC-192',
-    },
-    {
-      collectionImg: './img/collections/coll-2.jpg',
-      authorImg: './img/author/author-2.jpg',
-      title: 'Patternlicious',
-      description: 'ERC-61',
-    },
-    {
-      collectionImg: './img/collections/coll-3.jpg',
-      authorImg: './img/author/author-3.jpg',
-      title: 'Skecthify',
-      description: 'ERC-126',
-    },
-    {
-      collectionImg: './img/collections/coll-4.jpg',
-      authorImg: './img/author/author-4.jpg',
-      title: 'Cartoonism',
-      description: 'ERC-73',
-    },
-  ];
   constructor(props) {
     super(props);
     this.state = {
-      collection: this.dummyData.slice(0, 4),
+      collection: props.collection.slice(0, 4),
     };
   }
   render() {
-    var settings = {
-      infinite: false,
-      speed: 500,
-      slidesToShow: 4,
-      slidesToScroll: 1,
-      initialSlide: 0,
-      responsive: [
-        {
-          breakpoint: 1900,
-          settings: {
-            slidesToShow: 4,
-            slidesToScroll: 1,
-            infinite: true,
-          },
-        },
-        {
-          breakpoint: 1600,
-          settings: {
-            slidesToShow: 4,
-            slidesToScroll: 1,
-            infinite: true,
-          },
-        },
-        {
-          breakpoint: 1024,
-          settings: {
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            infinite: true,
-          },
-        },
-        {
-          breakpoint: 600,
-          settings: {
-            slidesToShow: 2,
-            slidesToScroll: 1,
-            initialSlide: 2,
-          },
-        },
-        {
-          breakpoint: 480,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            dots: true,
-          },
-        },
-      ],
-    };
     return (
       <div className="nft">
         <Slider {...settings}>

@@ -3,10 +3,11 @@ import Particle from '../components/Particle';
 import SliderMainParticle from '../components/SliderMainParticle';
 import FeatureBox from '../components/FeatureBox';
 import CarouselCollection from '../components/CarouselCollection';
-import ColumnNew from '../components/ColumnNew';
+import ListItems from '../components/ListItems';
 import AuthorList from '../components/authorList';
 import Footer from '../components/footer';
 import { createGlobalStyle } from 'styled-components';
+import { mockAuthor, mockCollection, mockItems } from '../../data/mockData';
 
 const GlobalStyles = createGlobalStyle`
   header#myHeader.navbar.sticky.white {
@@ -63,7 +64,7 @@ const Home = () => (
         </div>
       </div>
 
-      <ColumnNew />
+      <ListItems items={mockItems} />
     </section>
 
     <section className="container-fluid bg-gray">
@@ -78,7 +79,7 @@ const Home = () => (
       <div className="container">
         <div className="row">
           <div className="col-lg-12">
-            <CarouselCollection />
+            <CarouselCollection collection={mockCollection} />
           </div>
         </div>
       </div>
@@ -93,7 +94,7 @@ const Home = () => (
           </div>
         </div>
         <div className="col-lg-12">
-          <AuthorList />
+          <AuthorList author={mockAuthor} />
         </div>
       </div>
     </section>
