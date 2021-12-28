@@ -97,15 +97,17 @@ export default class ListItems extends Component {
             </div>
           </div>
         ))}
-        <div className="col-lg-12">
-          <div className="spacer-single"></div>
-          <span
-            onClick={() => this.loadMore()}
-            className="btn-main lead m-auto"
-          >
-            Load More
-          </span>
-        </div>
+        {this.state.nfts.length > 4 && (
+          <div className="col-lg-12">
+            <div className="spacer-single"></div>
+            <span
+              onClick={() => this.loadMore()}
+              className="btn-main lead m-auto"
+            >
+              Load More
+            </span>
+          </div>
+        )}
       </div>
     );
   }

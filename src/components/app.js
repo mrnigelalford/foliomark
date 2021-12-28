@@ -8,7 +8,7 @@ import Explore2 from './pages/explore2';
 import Rangking from './pages/rangking';
 import Auction from './pages/Auction';
 import Helpcenter from './pages/helpcenter';
-import Colection from './pages/colection';
+import Collection from './pages/collection';
 import ItemDetail from './pages/ItemDetail';
 import Author from './pages/Author';
 import Wallet from './pages/wallet';
@@ -71,9 +71,9 @@ const app = () => (
         <Rangking path="/rangking" />
         <Auction path="/Auction" />
         <Helpcenter path="/helpcenter" />
-        <Colection path="/colection" />
+        <Collection path="/collection" />
         <ItemDetail path="/ItemDetail/:id" />
-        <Author path="/Author" />
+        <Author path="/Author/:id" />
         <Wallet path="/wallet" />
         <Login path="/login" />
         <LoginTwo path="/loginTwo" />
