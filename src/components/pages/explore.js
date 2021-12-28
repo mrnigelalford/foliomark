@@ -1,8 +1,9 @@
 import React from 'react';
 import Select from 'react-select';
-import ColumnNew from '../components/ListItems';
+import ListItems from '../components/ListItems';
 import Footer from '../components/footer';
 import { createGlobalStyle } from 'styled-components';
+import { mockItems } from '../../data/mockData';
 
 const GlobalStyles = createGlobalStyle`
   header#myHeader.navbar.sticky.white {
@@ -147,7 +148,7 @@ const explore = () => (
           </div>
         </div>
       </div>
-      <ColumnNew />
+      <ListItems items={mockItems} />
     </section>
 
     <Footer />

@@ -18,9 +18,7 @@ import Register from './pages/register';
 import Price from './pages/price';
 import Works from './pages/works';
 import News from './pages/news';
-import Create from './pages/create';
 import Create2 from './pages/create2';
-import Create3 from './pages/create3';
 import Createoption from './pages/createOptions';
 import Activity from './pages/activity';
 import Contact from './pages/contact';
@@ -81,9 +79,7 @@ const app = () => (
         <Price path="/price" />
         <Works path="/works" />
         <News path="/news" />
-        <Create path="/create" />
         <Create2 path="/create2" />
-        <Create3 path="/create3" />
         <Createoption path="/createOptions" />
         <Activity path="/activity" />
         <Contact path="/contact" />
