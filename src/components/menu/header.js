@@ -214,7 +214,7 @@ const Header = function () {
                                 Explore 2
                               </NavLink>
                               <NavLink
-                                to="/rangking"
+                                to="/ranking"
                                 onClick={() => btn_icon(!showmenu)}
                               >
                                 Rangking
@@ -466,7 +466,7 @@ const Header = function () {
                             <div className="dropdown" onClick={closeMenu1}>
                               <NavLink to="/explore">Explore</NavLink>
                               <NavLink to="/explore2">Explore 2</NavLink>
-                              <NavLink to="/rangking">Rangking</NavLink>
+                              <NavLink to="/ranking">Rangking</NavLink>
                               <NavLink to="/colection">Collection</NavLink>
                               <NavLink to="/ItemDetail">Items Details</NavLink>
                               <NavLink to="/Auction">Live Auction</NavLink>

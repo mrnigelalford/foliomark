@@ -5,7 +5,7 @@ import Header from './menu/header';
 import Home from './pages/home';
 import Explore from './pages/explore';
 import Explore2 from './pages/explore2';
-import Rangking from './pages/rangking';
+import Ranking from './pages/ranking';
 import Auction from './pages/Auction';
 import Helpcenter from './pages/helpcenter';
 import Collection from './pages/collection';
@@ -68,7 +68,7 @@ const app = () => (
         </Home>
         <Explore path="/explore" />
         <Explore2 path="/explore2" />
-        <Rangking path="/rangking" />
+        <Ranking path="/ranking" />
         <Auction path="/Auction" />
         <Helpcenter path="/helpcenter" />
         <Collection path="/collection/:id" />
