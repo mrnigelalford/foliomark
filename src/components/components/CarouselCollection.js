@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { Link } from '@reach/router';
 
 class CustomSlide extends Component {
   render() {
@@ -71,31 +72,27 @@ export default class Responsive extends Component {
     return (
       <div className="nft">
         <Slider {...settings}>
-          {this.state.collection.map((coll, index) => (
-            <CustomSlide className="itm" index={index}>
-              <div className="nft_coll">
-                <div className="nft_wrap">
-                  <span>
+          {this.state.collection.map((coll, i) => (
+            <CustomSlide className="itm" index={i}>
+              <Link to={`/collection/${this.state.collection[i].id}`}>
+                <div className="nft_coll">
+                  <div className="nft_wrap">
                     <img
                       src={coll.collectionImg}
                       className="lazy img-fluid"
                       alt=""
                     />
-                  </span>
-                </div>
-                <div className="nft_coll_pp">
-                  <span onClick={() => window.open('/home', '_self')}>
+                  </div>
+                  <div className="nft_coll_pp">
                     <img className="lazy" src={coll.authorImg} alt="" />
-                  </span>
-                  <i className="fa fa-check"></i>
-                </div>
-                <div className="nft_coll_info">
-                  <span onClick={() => window.open('/home', '_self')}>
+                    <i className="fa fa-check"></i>
+                  </div>
+                  <div className="nft_coll_info">
                     <h4>{coll.title}</h4>
-                  </span>
-                  <span>{coll.description}</span>
+                    <span>{coll.description}</span>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </CustomSlide>
           ))}
         </Slider>

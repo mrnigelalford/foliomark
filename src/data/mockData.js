@@ -42,6 +42,7 @@ export const mockItems = [
       'Sed ut perspiciatis unde omnis iste natus error sit </br> voluptatem </br> accusantium doloremque laudantium, totam rem aperiam, eaque ipsa </br> quae ab </br>illo inventore veritatis et quasi architecto beatae </br> vitae dicta sunt </br> explicabo.',
     authorName: 'Monica Lucas',
     bids: bidsArray,
+    authorId: 'author-1',
   },
   {
     id: '1235abc',
@@ -61,6 +62,7 @@ export const mockItems = [
       'Sed ut perspiciatis unde omnis iste natus error sit </br> voluptatem </br> accusantium doloremque laudantium, totam rem aperiam, eaque ipsa </br> quae ab </br>illo inventore veritatis et quasi architecto beatae </br> vitae dicta sunt </br> explicabo.',
     authorName: 'Sue Stevens',
     bids: bidsArray,
+    authorId: 'author-2',
   },
   {
     id: '1236abc',
@@ -81,33 +83,46 @@ export const mockItems = [
       'Sed ut perspiciatis unde omnis iste natus error sit </br> voluptatem </br> accusantium doloremque laudantium, totam rem aperiam, eaque ipsa </br> quae ab </br>illo inventore veritatis et quasi architecto beatae </br> vitae dicta sunt </br> explicabo.',
     authorName: 'Jeremy Irons',
     bids: bidsArray,
+    authorId: 'author-3',
   },
 ];
 
 export const mockCollection = [
   {
+    id: 'abc123',
     collectionImg: `${imgUrl}/collections/coll-1.jpg?raw=true`,
     authorImg: `${imgUrl}/author/author-1.jpg?raw=true`,
+    authorId: 'author-1',
     title: 'Abstractions',
     description: 'ERC-192',
+    isVerified: false,
   },
   {
+    id: 'abc124',
     collectionImg: `${imgUrl}/collections/coll-2.jpg?raw=true`,
     authorImg: `${imgUrl}/author/author-2.jpg?raw=true`,
+    authorId: 'author-1',
     title: 'Patternlicious',
     description: 'ERC-61',
+    isVerified: true,
   },
   {
+    id: 'abc125',
     collectionImg: `${imgUrl}/collections/coll-3.jpg?raw=true`,
     authorImg: `${imgUrl}/author/author-3.jpg?raw=true`,
+    authorId: 'author-2',
     title: 'Skecthify',
     description: 'ERC-126',
+    isVerified: false,
   },
   {
+    id: 'abc126',
     collectionImg: `${imgUrl}/collections/coll-4.jpg?raw=true`,
     authorImg: `${imgUrl}/author/author-4.jpg?raw=true`,
+    authorId: 'author-3',
     title: 'Cartoonism',
     description: 'ERC-73',
+    isVerified: false,
   },
 ];
 

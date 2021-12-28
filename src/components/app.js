@@ -71,7 +71,7 @@ const app = () => (
         <Rangking path="/rangking" />
         <Auction path="/Auction" />
         <Helpcenter path="/helpcenter" />
-        <Collection path="/collection" />
+        <Collection path="/collection/:id" />
         <ItemDetail path="/ItemDetail/:id" />
         <Author path="/Author/:id" />
         <Wallet path="/wallet" />

@@ -2,7 +2,8 @@ import React from 'react';
 import Footer from '../components/footer';
 import { createGlobalStyle } from 'styled-components';
 import ListItems from '../components/ListItems';
-import { mockItems } from '../../data/mockData';
+import { mockAuthor, mockCollection, mockItems } from '../../data/mockData';
+import { useParams } from '@reach/router';
 
 const GlobalStyles = createGlobalStyle`
   header#myHeader.navbar.white {
@@ -21,7 +22,13 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-const Collection = function () {
+const getWalletId = (id) =>
+  mockAuthor.filter((a) => a.id === id)[0].wallet_address;
+
+const Collection = () => {
+  const { id } = useParams();
+  const collection = mockCollection.filter((data) => data.id === id)[0];
+
   const [openMenu, setOpenMenu] = React.useState(true);
   const [openMenu1, setOpenMenu1] = React.useState(false);
   const handleBtnClick = () => {
@@ -44,7 +51,7 @@ const Collection = function () {
       <section
         id="profile_banner"
         className="jumbotron breadcumb no-bg"
-        style={{ backgroundImage: `url(${'./img/background/4.jpg'})` }}
+        style={{ backgroundImage: `url(${collection.collectionImg})` }}
       >
         <div className="mainbreadcumb"></div>
       </section>
@@ -55,16 +62,16 @@ const Collection = function () {
             <div className="d_profile">
               <div className="profile_avatar">
                 <div className="d_profile_img">
-                  <img src="./img/author/author-1.jpg" alt="" />
-                  <i className="fa fa-check"></i>
+                  <img src={collection.authorImg} alt="" />
+                  {collection.isVerified && <i className="fa fa-check"></i>}
                 </div>
 
                 <div className="profile_name">
                   <h4>
-                    Abstraction
+                    {collection.title}
                     <div className="clearfix"></div>
                     <span id="wallet" className="profile_wallet">
-                      DdzFFzCqrhshMSxb9oW3mRo4MJrQkusV3fGFSTwaiu4wPBqMryA9DYVJCkW9n7twCffG5f5wX2sSkoDXGiZB1HPa7K7f865Kk4LqnrME
+                      {getWalletId(collection.authorId)}
                     </span>
                     <button id="btn_copy" title="Copy Text">
                       Copy
@@ -94,7 +101,7 @@ const Collection = function () {
         </div>
         {openMenu && (
           <div id="zero1" className="onStep fadeIn">
-            <ListItems items={mockItems} />
+            <ListItems items={[mockItems[0]]} />
           </div>
         )}
         {openMenu1 && (
