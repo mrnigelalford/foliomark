@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { setDefaultBreakpoints } from 'react-socks';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from '@reach/router';
-import { getWalletInfo } from '../../wallet/certifier';
-import { tezAddress } from '../components/wallet';
+import {
+  faTez,
+  getWalletInfo,
+  hasTezAccountInfo,
+} from '../../wallet/certifier';
 
 setDefaultBreakpoints([{ xs: 0 }, { l: 1199 }, { xl: 1200 }]);
 
@@ -21,47 +25,81 @@ const NavLink = (props) => (
 );
 
 const Header = function () {
-  const [openMenu, setOpenMenu] = React.useState(false);
-  const closeMenu = () => {
-    setOpenMenu(false);
+  const [tezAccountInfo, setTezAccountInfo] = useState(0);
+
+  const getAddressInfo = async (tezAccountInfo) => {
+    const walletinfo = await getWalletInfo(tezAccountInfo);
+    setTezAccountInfo(walletinfo);
   };
-  const [showmenu, btn_icon] = useState(false);
+
   useEffect(() => {
     const header = document.getElementById('myHeader');
     const totop = document.getElementById('scroll-to-top');
-    const sticky = header.offsetTop;
     const scrollCallBack = window.addEventListener('scroll', () => {
-      btn_icon(false);
-      if (window.pageYOffset > sticky) {
+      if (window.pageYOffset > header.offsetTop) {
         header.classList.add('sticky');
         totop.classList.add('show');
       } else {
         header.classList.remove('sticky');
         totop.classList.remove('show');
       }
-      if (window.pageYOffset > sticky) {
-        closeMenu();
-      }
     });
+
+    hasTezAccountInfo().then((info) => {
+      setTezAccountInfo(info);
+    });
+
     return () => {
       window.removeEventListener('scroll', scrollCallBack);
     };
   }, []);
+
+  const WalletButton = () => {
+    if (tezAccountInfo) {
+      console.log('tai: ', tezAccountInfo);
+      return (
+        <Button
+          variant="secondary"
+          className="btn-main"
+          onClick={() => getAddressInfo(tezAccountInfo)}
+        >
+          {tezAccountInfo.address}
+          <FontAwesomeIcon style={{ 'margin-left': '0.5em' }} icon={faTez} />
+        </Button>
+      );
+    }
+    return (
+      <Button
+        variant="primary"
+        className="btn-main"
+        onClick={() => getAddressInfo()}
+      >
+        Connect Wallet
+      </Button>
+    );
+  };
+
   return (
     <header id="myHeader" className="navbar white">
-      <Container fluid>
-        <Row style={{ flex: '0 0 100%' }}>
-          <Col className="logo px-0 navbar-title navbar-item">
+      <Container className="container" fluid>
+        <Row
+          style={{
+            flex: '0 0 100%',
+            'justify-content': 'center',
+            'align-items': 'center',
+          }}
+        >
+          <Col xs lg="2" className="logo">
             <NavLink to="/">
               <img
                 src="https://github.com/mrnigelalford/foliomark/blob/38baee707d6f50b321de110f67ea1e850e977b7c/public/img/logo-2-light.png?raw=true"
-                className="img-fluid d-none"
+                className="img-fluid"
                 alt="#"
               />
             </NavLink>
           </Col>
 
-          <Col xs={6}>
+          <Col xs lg="8">
             <div className="search">
               <input
                 id="quick_search"
@@ -73,10 +111,8 @@ const Header = function () {
             </div>
           </Col>
 
-          <Col>
-            <div className="btn-main" onClick={() => getWalletInfo(tezAddress)}>
-              Connect Wallet
-            </div>
+          <Col xs lg="2">
+            <WalletButton />
           </Col>
         </Row>
       </Container>

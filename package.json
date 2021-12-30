@@ -5,6 +5,9 @@
   "homepage": "./",
   "dependencies": {
     "@airgap/beacon-sdk": "^2.3.8",
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/react-fontawesome": "^0.1.16",
     "@reach/router": "^1.3.4",
     "@taquito/beacon-wallet": "^11.1.0",
     "@taquito/taquito": "^11.1.0",
@@ -62,6 +65,9 @@
     ]
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-common-types": "^0.2.36",
+    "@tqtezos/minter-contracts": "^1.12.0",
+    "@tqtezos/minter-sdk": "^1.11.1",
     "@types/react-dom": "^17.0.11",
     "@webpack-cli/generators": "^2.4.1",
     "typescript": "^3.9.10"
