@@ -93,7 +93,9 @@ const Header = () => {
                                             <form action="#" method="get" role="search" className="search-form">
                                                 <input type="search" id="s" className="search-field" placeholder="Search..." name="s" title="Search for" required="" />
                                                 <button className="search search-submit" type="submit" title="Search">
-                                                    <i className="icon-fl-search-filled"></i>
+                                                    <i className="icon-fl-search-filled" style={{cursor: 'pointer'}}
+                                                    onClick={() => {}}
+                                                    ></i>
                                                 </button>
                                             </form>
                                         </div>
