@@ -13,7 +13,7 @@ import topSellerData from '../assets/fake-data/data-top-seller';
 import TodayPicks from '../components/layouts/home-2/TodayPicks';
 import todayPickData from '../assets/fake-data/data-today-pick';
 
-const Home02 = () => {
+const Home = () => {
   return (
     <div className="home-2">
       <Header />
@@ -28,4 +28,4 @@ const Home02 = () => {
   );
 };
 
-export default Home02;
+export default Home;

@@ -2,12 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
-import TodayPicks from '../components/layouts/explore-02/TodayPicks';
-import todayPickData from '../assets/fake-data/data-today-pick';
+import Explore from '../components/layouts/explore-04/Explore';
+import widgetSidebarData from '../assets/fake-data/data-widget-sidebar';
 
-const Explore02 = () => {
+const ExplorePage = () => {
   return (
-    <div className="explore">
+    <div>
       <Header />
       <section className="flat-title-page inner">
         <div className="overlay"></div>
@@ -15,7 +15,7 @@ const Explore02 = () => {
           <div className="row">
             <div className="col-md-12">
               <div className="page-title-heading mg-bt-12">
-                <h1 className="heading text-center">Explore 2</h1>
+                <h1 className="heading text-center">Explore 4</h1>
               </div>
               <div className="breadcrumbs style2">
                 <ul>
@@ -25,17 +25,17 @@ const Explore02 = () => {
                   <li>
                     <Link to="#">Explore</Link>
                   </li>
-                  <li>Explore 2</li>
+                  <li>Explore 4</li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <TodayPicks data={todayPickData} />
+      <Explore data={widgetSidebarData} />
       <Footer />
     </div>
   );
 };
 
-export default Explore02;
+export default ExplorePage;
