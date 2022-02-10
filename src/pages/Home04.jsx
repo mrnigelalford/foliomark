@@ -12,20 +12,19 @@ import PopularCollection from '../components/layouts/PopularCollection';
 import popularCollectionData from '../assets/fake-data/data-popular-collection';
 import Create from '../components/layouts/Create';
 
-
 const Home04 = () => {
-    return (
-        <div className='home-4'>
-            <HeaderStyle2 />
-            <CardItem />
-            <LiveAuction data={liveAuctionData} />
-            <TopSeller data={topSellerData} />
-            <TodayPicks data={todayPickData} />
-            <PopularCollection data={popularCollectionData} />
-            <Create />
-            <Footer />
-        </div>
-    );
-}
+  return (
+    <div className="home-4">
+      <HeaderStyle2 />
+      <CardItem />
+      <LiveAuction data={liveAuctionData} />
+      <TopSeller data={topSellerData} />
+      <TodayPicks data={todayPickData} />
+      <PopularCollection data={popularCollectionData} />
+      <Create />
+      <Footer />
+    </div>
+  );
+};
 
 export default Home04;

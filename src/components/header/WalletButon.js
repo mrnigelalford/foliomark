@@ -1,13 +1,13 @@
-import { DAppClient } from "@airgap/beacon-sdk";
+import { DAppClient } from '@airgap/beacon-sdk';
 
-const dAppClient = new DAppClient({ name: "Beacon Docs" });
+const dAppClient = new DAppClient({ name: 'Beacon Docs' });
 
 export const connectWallet = async () => {
   try {
-    console.log("Requesting permissions...");
+    console.log('Requesting permissions...');
     const permissions = await dAppClient.requestPermissions();
-    console.log("Got permissions:", permissions.address);
+    console.log('Got permissions:', permissions.address);
   } catch (error) {
-    console.log("Got error:", error);
+    console.log('Got error:', error);
   }
-}
+};

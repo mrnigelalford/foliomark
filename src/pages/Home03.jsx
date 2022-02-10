@@ -14,18 +14,18 @@ import PopularCollection from '../components/layouts/home-3/PopularCollection';
 import popularCollectionData from '../assets/fake-data/data-popular-collection';
 
 const Home03 = () => {
-    return (
-        <div className='home-3'>
-            <Header />
-            <Slider data={heroSliderData} />
-            <Create />
-            <LiveAuction data={liveAuctionData} />
-            <TopSeller data={topSellerData} />
-            <TodayPicks data={todayPickData} />
-            <PopularCollection data={popularCollectionData} />
-            <Footer />
-        </div>
-    );
-}
+  return (
+    <div className="home-3">
+      <Header />
+      <Slider data={heroSliderData} />
+      <Create />
+      <LiveAuction data={liveAuctionData} />
+      <TopSeller data={topSellerData} />
+      <TodayPicks data={todayPickData} />
+      <PopularCollection data={popularCollectionData} />
+      <Footer />
+    </div>
+  );
+};
 
 export default Home03;

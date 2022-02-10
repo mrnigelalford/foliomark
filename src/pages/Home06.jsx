@@ -10,20 +10,19 @@ import todayPickData from '../assets/fake-data/data-today-pick';
 import PopularCollection from '../components/layouts/home-6/PopularCollection';
 import Create from '../components/layouts/home-6/Create';
 
-
 const Home06 = () => {
-    return (
-        <div className='home-6'>
-            <HeaderStyle2 />
-            <SliderStyle3 data={heroSliderData} />
-            <LiveAuction />
-            <TopSeller />
-            <TodayPicks data={todayPickData} />
-            <PopularCollection />
-            <Create />
-            <Footer />
-        </div>
-    );
-}
+  return (
+    <div className="home-6">
+      <HeaderStyle2 />
+      <SliderStyle3 data={heroSliderData} />
+      <LiveAuction />
+      <TopSeller />
+      <TodayPicks data={todayPickData} />
+      <PopularCollection />
+      <Create />
+      <Footer />
+    </div>
+  );
+};
 
 export default Home06;
