@@ -1,7 +1,7 @@
 {
-  "name": "axies-reactjs",
-  "homepage": "https://axiesreact.surielementor.com",
-  "version": "1.0.1",
+  "name": "folioMark",
+  "homepage": "https://foliomark.io",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "@airgap/beacon-sdk": "^2.3.9",
