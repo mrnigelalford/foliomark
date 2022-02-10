@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
 
-const Contact02 = () => {
+const ContactPage = () => {
   return (
     <div>
       <Header />
@@ -46,13 +46,13 @@ const Contact02 = () => {
                 <div className="form-inner">
                   <form
                     id="contactform"
-                    noValidate="novalidate"
+                    noValidate={true}
                     className="form-submit"
                   >
                     <input
                       id="name"
                       name="name"
-                      tabIndex="1"
+                      tabIndex={1}
                       aria-required="true"
                       required
                       type="text"
@@ -61,7 +61,7 @@ const Contact02 = () => {
                     <input
                       id="email"
                       name="email"
-                      tabIndex="2"
+                      tabIndex={2}
                       aria-required="true"
                       required
                       type="email"
@@ -78,7 +78,7 @@ const Contact02 = () => {
                     <textarea
                       id="message"
                       name="message"
-                      tabIndex="3"
+                      tabIndex={3}
                       aria-required="true"
                       required
                       placeholder="Message"
@@ -96,4 +96,4 @@ const Contact02 = () => {
   );
 };
 
-export default Contact02;
+export default ContactPage;

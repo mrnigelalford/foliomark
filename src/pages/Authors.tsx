@@ -5,33 +5,33 @@ import 'react-tabs/style/react-tabs.css';
 import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
 
-import avt from '../assets/images/avatar/avt-author-tab.jpg';
-import img1 from '../assets/images/box-item/card-item-3.jpg';
-import imga1 from '../assets/images/avatar/avt-1.jpg';
-import imgCollection1 from '../assets/images/avatar/avt-18.jpg';
-import img2 from '../assets/images/box-item/card-item-4.jpg';
-import imga2 from '../assets/images/avatar/avt-2.jpg';
-import imgCollection2 from '../assets/images/avatar/avt-18.jpg';
-import img3 from '../assets/images/box-item/card-item-2.jpg';
-import imga3 from '../assets/images/avatar/avt-4.jpg';
-import imgCollection3 from '../assets/images/avatar/avt-18.jpg';
-import img4 from '../assets/images/box-item/card-item-7.jpg';
-import imga4 from '../assets/images/avatar/avt-3.jpg';
-import imgCollection4 from '../assets/images/avatar/avt-18.jpg';
-import img5 from '../assets/images/box-item/card-item8.jpg';
-import imga5 from '../assets/images/avatar/avt-12.jpg';
-import imgCollection5 from '../assets/images/avatar/avt-18.jpg';
-import img6 from '../assets/images/box-item/card-item-9.jpg';
-import imga6 from '../assets/images/avatar/avt-1.jpg';
-import imgCollection6 from '../assets/images/avatar/avt-18.jpg';
-import img7 from '../assets/images/box-item/image-box-6.jpg';
-import imga7 from '../assets/images/avatar/avt-4.jpg';
-import imgCollection7 from '../assets/images/avatar/avt-18.jpg';
-import img8 from '../assets/images/box-item/image-box-11.jpg';
-import imga8 from '../assets/images/avatar/avt-3.jpg';
-import imgCollection8 from '../assets/images/avatar/avt-18.jpg';
+const avt = '../assets/images/avatar/avt-author-tab.jpg';
+const img1 = '../assets/images/box-item/card-item-3.jpg';
+const imga1 = '../assets/images/avatar/avt-1.jpg';
+const imgCollection1 = '../assets/images/avatar/avt-18.jpg';
+const img2 = '../assets/images/box-item/card-item-4.jpg';
+const imga2 = '../assets/images/avatar/avt-2.jpg';
+const imgCollection2 = '../assets/images/avatar/avt-18.jpg';
+const img3 = '../assets/images/box-item/card-item-2.jpg';
+const imga3 = '../assets/images/avatar/avt-4.jpg';
+const imgCollection3 = '../assets/images/avatar/avt-18.jpg';
+const img4 = '../assets/images/box-item/card-item-7.jpg';
+const imga4 = '../assets/images/avatar/avt-3.jpg';
+const imgCollection4 = '../assets/images/avatar/avt-18.jpg';
+const img5 = '../assets/images/box-item/card-item8.jpg';
+const imga5 = '../assets/images/avatar/avt-12.jpg';
+const imgCollection5 = '../assets/images/avatar/avt-18.jpg';
+const img6 = '../assets/images/box-item/card-item-9.jpg';
+const imga6 = '../assets/images/avatar/avt-1.jpg';
+const imgCollection6 = '../assets/images/avatar/avt-18.jpg';
+const img7 = '../assets/images/box-item/image-box-6.jpg';
+const imga7 = '../assets/images/avatar/avt-4.jpg';
+const imgCollection7 = '../assets/images/avatar/avt-18.jpg';
+const img8 = '../assets/images/box-item/image-box-11.jpg';
+const imga8 = '../assets/images/avatar/avt-3.jpg';
+const imgCollection8 = '../assets/images/avatar/avt-18.jpg';
 
-const Authors02 = () => {
+const AuthorsPage = () => {
   const [menuTab] = useState([
     {
       class: 'active',
@@ -693,4 +693,4 @@ const Authors02 = () => {
   );
 };
 
-export default Authors02;
+export default AuthorsPage;
