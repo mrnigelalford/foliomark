@@ -13,20 +13,19 @@ import topSellerData from '../assets/fake-data/data-top-seller';
 import TodayPicks from '../components/layouts/home-2/TodayPicks';
 import todayPickData from '../assets/fake-data/data-today-pick';
 
-
 const Home02 = () => {
-    return (
-        <div className='home-2'>
-            <Header />
-            <SliderStyle1 data={heroSliderData} />
-            <Create />
-            <LiveAuction data={liveAuctionData} />
-            <PopularCollection data={popularCollectionData} />
-            <TopSeller data={topSellerData} />
-            <TodayPicks data={todayPickData} />
-            <Footer />
-        </div>
-    );
-}
+  return (
+    <div className="home-2">
+      <Header />
+      <SliderStyle1 data={heroSliderData} />
+      <Create />
+      <LiveAuction data={liveAuctionData} />
+      <PopularCollection data={popularCollectionData} />
+      <TopSeller data={topSellerData} />
+      <TodayPicks data={todayPickData} />
+      <Footer />
+    </div>
+  );
+};
 
 export default Home02;
