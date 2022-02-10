@@ -12,12 +12,21 @@ import todayPickData from '../assets/fake-data/data-today-pick';
 import PopularCollection from '../components/layouts/PopularCollection';
 import popularCollectionData from '../assets/fake-data/data-popular-collection';
 import Create from '../components/layouts/Create';
+import { gql, useQuery } from '@apollo/client';
 
+const getTestData = gql`
+  query TestQuery {
+    testMessage
+  }
+`;
 const Home01 = () => {
+  const { loading, error, data } = useQuery(getTestData);
+
   return (
     <div className="home-1">
       <Header />
       <Slider data={heroSliderData} />
+      <h2>{data.testMessage}</h2>
       <LiveAuction data={liveAuctionData} />
       <TopSeller data={topSellerData} />
       <TodayPicks data={todayPickData} />
