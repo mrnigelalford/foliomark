@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
-import img1 from '../assets/images/box-item/card-item-10.jpg';
-import img2 from '../assets/images/box-item/image-box-10.jpg';
-import img3 from '../assets/images/box-item/image-box-11.jpg';
-import img4 from '../assets/images/box-item/image-box-21.jpg';
-import img5 from '../assets/images/box-item/image-box-6.jpg';
 
-const Activity01 = () => {
+const img1 = '../assets/images/box-item/card-item-10.jpg';
+const img2 = '../assets/images/box-item/image-box-10.jpg';
+const img3 = '../assets/images/box-item/image-box-11.jpg';
+const img4 = '../assets/images/box-item/image-box-21.jpg';
+const img5 = '../assets/images/box-item/image-box-6.jpg';
+
+const ActivityPage = () => {
   const [dataBox] = useState([
     {
       img: img1,
@@ -235,4 +236,4 @@ const Activity01 = () => {
   );
 };
 
-export default Activity01;
+export default ActivityPage;

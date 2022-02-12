@@ -5,8 +5,9 @@ import Footer from '../components/footer/Footer';
 import Countdown from 'react-countdown';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-import img1 from '../assets/images/box-item/image-box-6.jpg';
-import avt from '../assets/images/avatar/avt-9.jpg';
+
+const img1 = '../assets/images/box-item/image-box-6.jpg';
+const avt = '../assets/images/avatar/avt-9.jpg';
 
 const CreateItem = () => {
   return (
