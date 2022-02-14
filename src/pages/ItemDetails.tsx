@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
 import { Link, NavLink } from 'react-router-dom';
@@ -7,6 +7,8 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import liveAuctionData from '../assets/fake-data/data-live-auction';
 import LiveAuction from '../components/layouts/LiveAuction';
+import { useQuery } from '@apollo/client';
+import GET_ASSETS from '../graphql/assets';
 
 const img1 = './assets/images/avatar/avt-3.jpg';
 const img2 = '../assets/images/avatar/avt-11.jpg';
@@ -64,6 +66,15 @@ const ItemDetailsPage = () => {
       priceChange: '$12.246',
     },
   ]);
+
+  const { data } = useQuery(GET_ASSETS);
+
+  useEffect(() => {
+    if (data) {
+      console.log('data: ', data.assets);
+    }
+  }, [data]);
+
   return (
     <div className="item-details">
       <Header />

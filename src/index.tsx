@@ -5,7 +5,7 @@ import ScrollToTop from './ScrollToTop';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 const client = new ApolloClient({
-  uri: process.env.apolloURL,
+  uri: 'https://us-central1-foliomark.cloudfunctions.net/web',
   cache: new InMemoryCache(),
 });
 
