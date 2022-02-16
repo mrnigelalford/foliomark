@@ -11,7 +11,7 @@ const heroSliderData = [
     title_4: 'NFTs',
     description:
       'Marketplace for monster character cllections non fungible token NFTs',
-    img: img1,
+    img: 'https://backend.kukai.network/file/po7jvyatxbm472vtbytg5ipw5yx46r_raw.jpeg',
     imgbg: imgbg1,
   },
   {
