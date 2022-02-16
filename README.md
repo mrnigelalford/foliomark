@@ -72,3 +72,19 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### GraphQL
 
 [Playground](https://studio.apollographql.com/sandbox/explorer) to test graphql
+
+### Test Images
+
+ottez: https://backend.kukai.network/file/yews2a5buw36aphwqw5b6kbv54fje7_raw.png
+
+tezzarz: https://backend.kukai.network/file/6vbjqvhb5plxaoi7jrdmghykuwloba_raw.png
+
+ziggy: https://backend.kukai.network/file/ta6kebe6c7bkhnskayvuqc5xk45ain_raw.png
+
+Ratinho: https://backend.kukai.network/file/po7jvyatxbm472vtbytg5ipw5yx46r_raw.jpeg
+
+punky: https://backend.kukai.network/file/wrjushq2zhomzuxyaghrfx7qgb2gdn_raw.jpeg
+
+punky2: https://backend.kukai.network/file/qcrrdl55h36y7y3jcmowixeaqakkab_raw.jpeg
+
+ratbatkat: https://backend.kukai.network/file/hffkpew5xf4kppkd5ffmscgicsna5j_raw.jpeg

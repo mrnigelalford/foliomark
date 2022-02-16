@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const GET_ASSETS = gql`
+export const GET_ASSETS = gql`
   query Assets {
     assets {
       title
