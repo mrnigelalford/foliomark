@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import GET_ASSETS from '../../../graphql/assets';
 
-const TodayPicks = (props) => {
-  const data = props.data;
-
+const TodayPicks = () => {
   const [visible, setVisible] = useState(8);
   const showMoreItems = () => {
     setVisible((prevValue) => prevValue + 4);
   };
+
+  const { data } = useQuery(GET_ASSETS);
+  const [assets, setAssets] = React.useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setAssets(data.assets);
+      console.log('assets: ', data);
+    }
+  }, [data]);
+
   return (
     <section className="tf-section today-pick">
       <div className="themesflat-container">
@@ -21,10 +32,10 @@ const TodayPicks = (props) => {
               </Link>
             </div>
           </div>
-          {data.slice(0, visible).map((item, index) => (
+          {assets.slice(0, visible).map((item, index) => (
             <TodayPicksItem key={index} item={item} />
           ))}
-          {visible < data.length && (
+          {visible < assets.length && (
             <div className="col-md-12 wrap-inner load-more text-center">
               <Link
                 to="#"
@@ -46,16 +57,16 @@ TodayPicks.propTypes = {
   data: PropTypes.array.isRequired,
 };
 
-const TodayPicksItem = (props) => (
+const TodayPicksItem = ({ item }) => (
   <div className="fl-item col-xl-3 col-lg-4 col-md-6 col-sm-6">
     <div
       className={`sc-card-product explode style2 mg-bt ${
-        props.item.feature ? 'comingsoon' : ''
+        item.feature ? 'comingsoon' : ''
       } `}
     >
       <div className="card-media">
         <Link to="/item-details-01">
-          <img src={props.item.img} alt="Axies" />
+          <img src={item.previewImg} alt="Axies" />
         </Link>
         <div className="button-place-bid">
           <Link
@@ -66,36 +77,36 @@ const TodayPicksItem = (props) => (
           </Link>
         </div>
         <Link to="/login" className="wishlist-button heart">
-          <span className="number-like">{props.item.wishlist}</span>
+          <span className="number-like">{item.wishlist}</span>
         </Link>
-        <div className="coming-soon">{props.item.feature}</div>
+        <div className="coming-soon">{item.feature}</div>
       </div>
       <div className="card-title">
         <h5>
-          <Link to="/item-details-01">"{props.item.title}"</Link>
+          <Link to="/item-details-01">"{item.title}"</Link>
         </h5>
       </div>
       <div className="meta-info">
         <div className="author">
           <div className="avatar">
-            <img src={props.item.imgAuthor} alt="Axies" />
+            <img src={item.author.img} alt="Axies" />
           </div>
           <div className="info">
             <span>Creator</span>
             <h6>
               {' '}
-              <Link to="/authors-02">{props.item.nameAuthor}</Link>{' '}
+              <Link to="/authors-02">{item.author.bioLink}</Link>{' '}
             </h6>
           </div>
         </div>
-        <div className="tags">{props.item.tags}</div>
+        <div className="tags">{item.tags}</div>
       </div>
       <div className="card-bottom style-explode">
         <div className="price">
           <span>Current Bid</span>
           <div className="price-details">
-            <h5>{props.item.price}</h5>
-            <span>= {props.item.priceChange}</span>
+            <h5>{item.price}</h5>
+            <span>= {item.priceChange}</span>
           </div>
         </div>
         <Link to="/activity-01" className="view-history reload">

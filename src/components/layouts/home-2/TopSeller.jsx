@@ -38,7 +38,6 @@ const TopSeller = (props) => {
 };
 
 const TopSellerItem = ({ item }) => {
-  console.log('props: ', item);
   return (
     <div className={`box-item ${item.classPadding}`}>
       <div className="sc-author-box style-3 pd-0">
