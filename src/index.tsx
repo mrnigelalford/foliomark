@@ -4,9 +4,12 @@ import { BrowserRouter } from 'react-router-dom';
 import ScrollToTop from './ScrollToTop';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
-let grapqhlEndpoint = process.env.REACT_APP_PROD_GRAPHQL;
+let grapqhlEndpoint = 'https://us-central1-foliomark.cloudfunctions.net/web';
 
-if (process.env.REACT_APP_ENV === 'develop') {
+if (
+  process.env.REACT_APP_ENV === 'develop' &&
+  process.env.REACT_APP_LOCAL_GRAPHQL
+) {
   grapqhlEndpoint = process.env.REACT_APP_LOCAL_GRAPHQL;
 }
 

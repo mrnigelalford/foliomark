@@ -88,3 +88,10 @@ punky: https://backend.kukai.network/file/wrjushq2zhomzuxyaghrfx7qgb2gdn_raw.jpe
 punky2: https://backend.kukai.network/file/qcrrdl55h36y7y3jcmowixeaqakkab_raw.jpeg
 
 ratbatkat: https://backend.kukai.network/file/hffkpew5xf4kppkd5ffmscgicsna5j_raw.jpeg
+
+### Future Improvments
+
+- img resizer function
+  - when added an image is resized to fit different use cases
+  - caching
+  - analytics to drive site data (page views)
