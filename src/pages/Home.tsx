@@ -8,7 +8,6 @@ import LiveAuction from '../components/layouts/home-2/LiveAuction';
 import TopSeller from '../components/layouts/home-2/TopSeller';
 import PopularCollection from '../components/layouts/home-2/PopularCollection';
 import SliderStyle1 from '../components/slider/SliderStyle1';
-import topSellerData from '../assets/fake-data/data-top-seller';
 import TodayPicks from '../components/layouts/home-2/TodayPicks';
 import todayPickData from '../assets/fake-data/data-today-pick';
 
@@ -32,7 +31,7 @@ const Home = () => {
       <Create />
       {auctions.length && <LiveAuction data={auctions} />}
       <PopularCollection data={popularCollectionData} />
-      <TopSeller data={topSellerData} />
+      <TopSeller />
       <TodayPicks data={todayPickData} />
       <Footer />
     </div>

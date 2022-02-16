@@ -4,11 +4,13 @@ import { BrowserRouter } from 'react-router-dom';
 import ScrollToTop from './ScrollToTop';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
-let grapqhlEndpoint = 'https://us-central1-foliomark.cloudfunctions.net/web';
+let grapqhlEndpoint = process.env.REACT_APP_PROD_GRAPHQL;
 
-if (process.env.NODE_ENV !== 'production') {
-  grapqhlEndpoint = 'http://localhost:4000';
+if (process.env.REACT_APP_ENV === 'develop') {
+  grapqhlEndpoint = process.env.REACT_APP_LOCAL_GRAPHQL;
 }
+
+console.log('grapqhlEndpoint', grapqhlEndpoint);
 
 const client = new ApolloClient({
   uri: grapqhlEndpoint,

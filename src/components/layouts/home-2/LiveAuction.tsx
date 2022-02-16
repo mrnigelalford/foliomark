@@ -10,7 +10,6 @@ import 'swiper/scss/navigation';
 import 'swiper/scss/pagination';
 
 const LiveAuction = (auctions: any) => {
-  console.log('auctions: ', auctions);
   return (
     <section className="tf-section live-auctions bg-style">
       <div className="themesflat-container">
