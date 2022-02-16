@@ -6,7 +6,7 @@ const menus = [
       {
         id: 1,
         sub: 'Explore 01',
-        links: '/explore-01',
+        links: '/explore',
       },
     ],
   },
@@ -39,7 +39,7 @@ const menus = [
       {
         id: 1,
         sub: 'Contact 1',
-        links: '/contact-01',
+        links: '/contact',
       },
     ],
   },
