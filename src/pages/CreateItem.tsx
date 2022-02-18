@@ -6,10 +6,30 @@ import Countdown from 'react-countdown';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
-const img1 = '../assets/images/box-item/image-box-6.jpg';
-const avt = '../assets/images/avatar/avt-9.jpg';
+const img1 =
+  'https://backend.kukai.network/file/yews2a5buw36aphwqw5b6kbv54fje7_raw.png';
+const avt =
+  'https://backend.kukai.network/file/6vbjqvhb5plxaoi7jrdmghykuwloba_raw.png';
 
 const CreateItem = () => {
+  const [title, setTitle] = React.useState('Item Name');
+  const [price, setPrice] = React.useState(0);
+  const [category, setCategory] = React.useState('Art');
+
+  const categories = [
+    'Art',
+    'Website',
+    'Mobile',
+    'Game',
+    'Print',
+    'illustration',
+    'study',
+    'Template',
+    'Product',
+    'Design',
+    'Typography',
+  ];
+
   return (
     <div className="create-item">
       <Header />
@@ -40,6 +60,23 @@ const CreateItem = () => {
         <div className="themesflat-container">
           <div className="row">
             <div className="col-xl-3 col-lg-6 col-md-6 col-12">
+              <form action="#">
+                <h4 className="title-create-item">Upload file</h4>
+                <label
+                  className="uploadFile"
+                  style={{ padding: '0 25px', lineHeight: '7em' }}
+                >
+                  <span className="filename">
+                    PNG, JPG, GIF, WEBP or MP4. Max 200mb.
+                  </span>
+                  <input
+                    type="file"
+                    className="inputfile form-control"
+                    name="file"
+                    style={{ position: 'relative', top: 'auto', right: 'auto' }}
+                  />
+                </label>
+              </form>
               <h4 className="title-create-item">Preview item</h4>
               <div className="sc-card-product">
                 <div className="card-media">
@@ -49,7 +86,10 @@ const CreateItem = () => {
                   <Link to="/login" className="wishlist-button heart">
                     <span className="number-like"> 100</span>
                   </Link>
-                  <div className="featured-countdown">
+                  <div
+                    style={{ display: 'none' }}
+                    className="featured-countdown"
+                  >
                     <span className="slogan"></span>
                     <Countdown date={Date.now() + 500000000}>
                       <span>You are good to go!</span>
@@ -57,10 +97,8 @@ const CreateItem = () => {
                   </div>
                 </div>
                 <div className="card-title">
-                  <h5>
-                    <Link to="/item-details-01">"Cyber Doberman #766”</Link>
-                  </h5>
-                  <div className="tags">bsc</div>
+                  <h5>{title}</h5>
+                  <p>{category}</p>
                 </div>
                 <div className="meta-info">
                   <div className="author">
@@ -77,7 +115,7 @@ const CreateItem = () => {
                   </div>
                   <div className="price">
                     <span>Current Bid</span>
-                    <h5> 4.89 ETH</h5>
+                    <h5>{price}</h5>
                   </div>
                 </div>
                 <div className="card-bottom">
@@ -95,44 +133,24 @@ const CreateItem = () => {
             </div>
             <div className="col-xl-9 col-lg-6 col-md-12 col-12">
               <div className="form-create-item">
-                <form action="#">
-                  <h4 className="title-create-item">Upload file</h4>
-                  <label className="uploadFile">
-                    <span className="filename">
-                      PNG, JPG, GIF, WEBP or MP4. Max 200mb.
-                    </span>
-                    <input
-                      type="file"
-                      className="inputfile form-control"
-                      name="file"
-                    />
-                  </label>
-                </form>
                 <div className="flat-tabs tab-create-item">
-                  <h4 className="title-create-item">Select method</h4>
                   <Tabs>
-                    <TabList>
-                      <Tab>
-                        <span className="icon-fl-tag"></span>Fixed Price
-                      </Tab>
-                      <Tab>
-                        <span className="icon-fl-clock"></span>Time Auctions
-                      </Tab>
-                      <Tab>
-                        <span className="icon-fl-icon-22"></span>Open For Bids
-                      </Tab>
-                    </TabList>
-
                     <TabPanel>
                       <form action="#">
-                        <h4 className="title-create-item">Price</h4>
+                        <h4 className="title-create-item">Title</h4>
                         <input
                           type="text"
-                          placeholder="Enter price for one item (ETH)"
+                          placeholder={title}
+                          onChange={(e) => setTitle(e.target.value)}
                         />
 
-                        <h4 className="title-create-item">Title</h4>
-                        <input type="text" placeholder="Item Name" />
+                        <h4 className="title-create-item">Price</h4>
+                        <input
+                          type="number"
+                          placeholder={price.toString()}
+                          onChange={(e) => setPrice(Number(e.target.value))}
+                          step="0.01"
+                        />
 
                         <h4 className="title-create-item">Description</h4>
                         <textarea placeholder="e.g. “This is very limited item”"></textarea>
@@ -147,33 +165,27 @@ const CreateItem = () => {
                             <input type="text" placeholder="e.g. “size”" />
                           </div>
                           <div className="inner-row-form style-2">
-                            <div className="seclect-box">
+                            <h4 className="title-create-item">Category</h4>
+                            <div
+                              className="seclect-box"
+                              style={{ paddingTop: 0 }}
+                            >
                               <div id="item-create" className="dropdown">
                                 <Link to="#" className="btn-selector nolink">
-                                  Abstraction
+                                  Categories
                                 </Link>
                                 <ul>
-                                  <li>
-                                    <span>Art</span>
-                                  </li>
-                                  <li>
-                                    <span>Music</span>
-                                  </li>
-                                  <li>
-                                    <span>Domain Names</span>
-                                  </li>
-                                  <li>
-                                    <span>Virtual World</span>
-                                  </li>
-                                  <li>
-                                    <span>Trading Cards</span>
-                                  </li>
-                                  <li>
-                                    <span>Sports</span>
-                                  </li>
-                                  <li>
-                                    <span>Utility</span>
-                                  </li>
+                                  {categories.map((cat, i) => (
+                                    <li
+                                      key={cat + i}
+                                      onClick={() => {
+                                        console.log('set', cat);
+                                        setCategory(cat);
+                                      }}
+                                    >
+                                      <span>{cat}</span>
+                                    </li>
+                                  ))}
                                 </ul>
                               </div>
                             </div>
@@ -210,7 +222,11 @@ const CreateItem = () => {
                         </div>
 
                         <h4 className="title-create-item">Title</h4>
-                        <input type="text" placeholder="Item Name" />
+                        <input
+                          type="text"
+                          placeholder={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                        />
 
                         <h4 className="title-create-item">Description</h4>
                         <textarea placeholder="e.g. “This is very limited item”"></textarea>
@@ -258,6 +274,24 @@ const CreateItem = () => {
                         <textarea placeholder="e.g. “This is very limited item”"></textarea>
                       </form>
                     </TabPanel>
+
+                    <h4
+                      style={{ marginTop: '20px' }}
+                      className="title-create-item"
+                    >
+                      Select method
+                    </h4>
+                    <TabList>
+                      <Tab>
+                        <span className="icon-fl-tag"></span>Fixed Price
+                      </Tab>
+                      <Tab>
+                        <span className="icon-fl-clock"></span>Time Auctions
+                      </Tab>
+                      <Tab>
+                        <span className="icon-fl-icon-22"></span>Open For Bids
+                      </Tab>
+                    </TabList>
                   </Tabs>
                 </div>
               </div>

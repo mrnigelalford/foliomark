@@ -8,7 +8,6 @@ import TopSeller from '../components/layouts/home-2/TopSeller';
 import PopularCollection from '../components/layouts/home-2/PopularCollection';
 import SliderStyle1 from '../components/slider/SliderStyle1';
 import TodayPicks from '../components/layouts/home-2/TodayPicks';
-import todayPickData from '../assets/fake-data/data-today-pick';
 
 import { useQuery } from '@apollo/client';
 import { GET_AUCTIONS } from '../graphql/auctions';
@@ -31,7 +30,7 @@ const Home = () => {
       {auctions.length && <LiveAuction data={auctions} />}
       <PopularCollection />
       <TopSeller />
-      <TodayPicks data={todayPickData} />
+      <TodayPicks />
       <Footer />
     </div>
   );

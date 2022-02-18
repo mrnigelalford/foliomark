@@ -53,10 +53,6 @@ const TodayPicks = () => {
   );
 };
 
-TodayPicks.propTypes = {
-  data: PropTypes.array.isRequired,
-};
-
 const TodayPicksItem = ({ item }) => (
   <div className="fl-item col-xl-3 col-lg-4 col-md-6 col-sm-6">
     <div

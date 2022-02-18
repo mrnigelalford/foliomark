@@ -1062,7 +1062,7 @@
     overflow      : hidden;
     text-overflow : ellipsis;
     max-width     : 70%;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     line-height   : 26px;
 }
 
