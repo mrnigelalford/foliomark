@@ -3,32 +3,79 @@ import { Link } from 'react-router-dom';
 import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
 import Countdown from 'react-countdown';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Slider } from 'primereact/slider';
+import { gql, useMutation } from '@apollo/client';
+import { SET_ASSET } from '../graphql/assets';
 
-const img1 =
-  'https://backend.kukai.network/file/yews2a5buw36aphwqw5b6kbv54fje7_raw.png';
 const avt =
   'https://backend.kukai.network/file/6vbjqvhb5plxaoi7jrdmghykuwloba_raw.png';
+const sampleDescription = 'e.g. “This is very limited item”';
+
+const photoDescription =
+  'Types supported: gif, jpeg, png, svg, mp4, webm, glb, mp3, wav, flac, pdf, zip (interactive), Max file size is 100MB';
+
+const License = {
+  CC0: 'CC0 (Public Domain)',
+  CC_BY: 'CC BY',
+  CC_BY_SA: 'CC BY-SA',
+};
+
+const categories = [
+  'Art',
+  'Website',
+  'Mobile',
+  'Game',
+  'Print',
+  'illustration',
+  'study',
+  'Template',
+  'Product',
+  'Design',
+  'Typography',
+];
+const getBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+    reader.readAsDataURL(file);
+  });
+};
 
 const CreateItem = () => {
   const [title, setTitle] = React.useState('Item Name');
   const [price, setPrice] = React.useState(0);
   const [category, setCategory] = React.useState('Art');
+  const [description, setDescription] = React.useState(sampleDescription);
+  const [quantity, setQuantity] = React.useState(1);
+  const [license, setLicense] = React.useState(License.CC0);
+  const [royaltyAddress, setRoyaltyAddress] = React.useState('');
+  const [royaltyPercent, setRoyaltyPercent] = React.useState(0);
+  const [img, setImg] = React.useState<string>();
 
-  const categories = [
-    'Art',
-    'Website',
-    'Mobile',
-    'Game',
-    'Print',
-    'illustration',
-    'study',
-    'Template',
-    'Product',
-    'Design',
-    'Typography',
-  ];
+  const onFileInputChange = (e) => {
+    if (e) {
+      console.log('e: ', typeof e.target.files[0]);
+      getBase64(e.target.files[0]).then((data) => {
+        if (data && typeof data === 'string') setImg(data);
+      });
+    }
+  };
+
+  const nft = {
+    title,
+    price,
+    category,
+    description,
+    royalties: royaltyPercent,
+    quantity,
+    license,
+    img,
+  };
+
+  const [setAsset, { data, loading, error }] = useMutation(SET_ASSET);
 
   return (
     <div className="create-item">
@@ -41,7 +88,7 @@ const CreateItem = () => {
               <div className="page-title-heading mg-bt-12">
                 <h1 className="heading text-center">Create Item</h1>
               </div>
-              <div className="breadcrumbs style2">
+              <div style={{ display: 'none' }} className="breadcrumbs style2">
                 <ul>
                   <li>
                     <Link to="/">Home</Link>
@@ -60,32 +107,19 @@ const CreateItem = () => {
         <div className="themesflat-container">
           <div className="row">
             <div className="col-xl-3 col-lg-6 col-md-6 col-12">
-              <form action="#">
-                <h4 className="title-create-item">Upload file</h4>
-                <label
-                  className="uploadFile"
-                  style={{ padding: '0 25px', lineHeight: '7em' }}
-                >
-                  <span className="filename">
-                    PNG, JPG, GIF, WEBP or MP4. Max 200mb.
-                  </span>
-                  <input
-                    type="file"
-                    className="inputfile form-control"
-                    name="file"
-                    style={{ position: 'relative', top: 'auto', right: 'auto' }}
-                  />
-                </label>
-              </form>
               <h4 className="title-create-item">Preview item</h4>
               <div className="sc-card-product">
                 <div className="card-media">
-                  <Link to="/item-details-01">
-                    <img src={img1} alt="Axies" />
-                  </Link>
-                  <Link to="/login" className="wishlist-button heart">
-                    <span className="number-like"> 100</span>
-                  </Link>
+                  {img ? (
+                    <img src={img} alt="background" />
+                  ) : (
+                    <div
+                      style={{
+                        height: '30em',
+                        backgroundColor: 'rgb(98 98 122)',
+                      }}
+                    ></div>
+                  )}
                   <div
                     style={{ display: 'none' }}
                     className="featured-countdown"
@@ -106,44 +140,68 @@ const CreateItem = () => {
                       <img src={avt} alt="Axies" />
                     </div>
                     <div className="info">
-                      <span>Owned By</span>
+                      <span>Creator</span>
                       <h6>
                         {' '}
                         <Link to="/author-02">Freddie Carpenter</Link>
                       </h6>
                     </div>
                   </div>
-                  <div className="price">
-                    <span>Current Bid</span>
-                    <h5>{price}</h5>
+                  <div style={{ display: 'none' }} className="price">
+                    <span>Value</span>
+                    <h5>{price} xtz</h5>
                   </div>
-                </div>
-                <div className="card-bottom">
-                  <Link
-                    to="/wallet-connect"
-                    className="sc-button style bag fl-button pri-3"
-                  >
-                    <span>Place Bid</span>
-                  </Link>
-                  <Link to="/activity-01" className="view-history reload">
-                    View History
-                  </Link>
                 </div>
               </div>
             </div>
             <div className="col-xl-9 col-lg-6 col-md-12 col-12">
+              <form action="#">
+                <h4 className="title-create-item">Upload File</h4>
+                <div
+                  className="uploadFile"
+                  style={{ padding: '25px', lineHeight: '7em' }}
+                >
+                  <p style={{ fontSize: '1em' }} className="sub-heading">
+                    {photoDescription}
+                  </p>
+                  <input
+                    type="file"
+                    className="inputfile form-control"
+                    name="file"
+                    onChange={onFileInputChange}
+                    style={{
+                      position: 'inherit',
+                      top: 'inherit',
+                      width: 'inherit',
+                      height: 'inherit',
+                      transform: 'inherit',
+                      marginTop: '2%',
+                      left: '0.1em',
+                    }}
+                  />
+                </div>
+              </form>
               <div className="form-create-item">
                 <div className="flat-tabs tab-create-item">
-                  <Tabs>
-                    <TabPanel>
-                      <form action="#">
-                        <h4 className="title-create-item">Title</h4>
-                        <input
-                          type="text"
-                          placeholder={title}
-                          onChange={(e) => setTitle(e.target.value)}
-                        />
+                  <form action="#">
+                    <h4 className="title-create-item">Title</h4>
+                    <input
+                      type="text"
+                      placeholder={title}
+                      onBlur={(e) => setTitle(e.target.value)}
+                    />
 
+                    <h4 className="title-create-item">Description</h4>
+                    <textarea
+                      placeholder={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                    ></textarea>
+
+                    <div className="row-form style-3">
+                      <div
+                        style={{ display: 'none' }}
+                        className="inner-row-form"
+                      >
                         <h4 className="title-create-item">Price</h4>
                         <input
                           type="number"
@@ -151,148 +209,144 @@ const CreateItem = () => {
                           onChange={(e) => setPrice(Number(e.target.value))}
                           step="0.01"
                         />
+                      </div>
 
-                        <h4 className="title-create-item">Description</h4>
-                        <textarea placeholder="e.g. “This is very limited item”"></textarea>
+                      <div style={{ width: '10%' }}>
+                        <h4 className="title-create-item">Quantity</h4>
+                        <input
+                          type="number"
+                          placeholder={quantity.toString()}
+                          onBlur={(e) =>
+                            setQuantity(Number(e.target.textContent))
+                          }
+                          style={{ marginTop: '1.25em' }}
+                        />
+                      </div>
 
-                        <div className="row-form style-3">
-                          <div className="inner-row-form">
-                            <h4 className="title-create-item">Royalties</h4>
-                            <input type="text" placeholder="5%" />
-                          </div>
-                          <div className="inner-row-form">
-                            <h4 className="title-create-item">Size</h4>
-                            <input type="text" placeholder="e.g. “size”" />
-                          </div>
-                          <div className="inner-row-form style-2">
-                            <h4 className="title-create-item">Category</h4>
-                            <div
-                              className="seclect-box"
-                              style={{ paddingTop: 0 }}
+                      <div style={{ width: '70%', marginBottom: '4em' }}>
+                        <h4
+                          style={{ marginBottom: '0' }}
+                          className="title-create-item"
+                        >
+                          Royalties
+                        </h4>
+                        <p style={{ marginBottom: '.5em' }}>
+                          set royalty % with slider and target address if
+                          differnt than user.
+                        </p>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexFlow: 'row wrap',
+                            justifyContent: 'space-between',
+                          }}
+                        >
+                          <input
+                            type="number"
+                            value={royaltyPercent}
+                            style={{ width: '14%' }}
+                            onChange={(e) =>
+                              setRoyaltyPercent(Number(e.target.value))
+                            }
+                          />
+                          <input
+                            type="text"
+                            value={royaltyAddress}
+                            placeholder="abcd1234...."
+                            onChange={(e) => setRoyaltyAddress(e.target.value)}
+                            style={{ width: '83%' }}
+                          />
+                          <Slider
+                            value={royaltyPercent}
+                            onChange={(e) => setRoyaltyPercent(Number(e.value))}
+                            min={1}
+                            max={12}
+                            style={{ width: '60%', top: '2em', left: '1.2em' }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="row-form style-3">
+                      <div>
+                        <h4 className="title-create-item">License</h4>
+                        <DropdownButton
+                          variant="primary"
+                          menuVariant="dark"
+                          title={license}
+                          className="create-category-dropdown"
+                        >
+                          {Object.entries(License).map((license, i) => (
+                            <Dropdown.Item
+                              key={license[1] + i}
+                              onClick={() => setLicense(license[1])}
+                              style={{
+                                width: '16em',
+                                borderRadius: '.3em',
+                                fontSize: '2em',
+                                lineHeight: '1.7em',
+                              }}
                             >
-                              <div id="item-create" className="dropdown">
-                                <Link to="#" className="btn-selector nolink">
-                                  Categories
-                                </Link>
-                                <ul>
-                                  {categories.map((cat, i) => (
-                                    <li
-                                      key={cat + i}
-                                      onClick={() => {
-                                        console.log('set', cat);
-                                        setCategory(cat);
-                                      }}
-                                    >
-                                      <span>{cat}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-                    </TabPanel>
-                    <TabPanel>
-                      <form action="#">
-                        <h4 className="title-create-item">Minimum bid</h4>
-                        <input type="text" placeholder="enter minimum bid" />
-                        <div className="row">
-                          <div className="col-md-6">
-                            <h5 className="title-create-item">Starting date</h5>
-                            <input
-                              type="date"
-                              name="bid_starting_date"
-                              id="bid_starting_date"
-                              className="form-control"
-                              min="1997-01-01"
-                            />
-                          </div>
-                          <div className="col-md-6">
-                            <h4 className="title-create-item">
-                              Expiration date
-                            </h4>
-                            <input
-                              type="date"
-                              name="bid_expiration_date"
-                              id="bid_expiration_date"
-                              className="form-control"
-                            />
-                          </div>
-                        </div>
+                              {license[1]}
+                            </Dropdown.Item>
+                          ))}
+                        </DropdownButton>
+                      </div>
+                      <div>
+                        <h4 className="title-create-item">Category</h4>
+                        <DropdownButton
+                          variant="primary"
+                          menuVariant="dark"
+                          title={category}
+                          className="create-category-dropdown"
+                        >
+                          {categories.map((cat, i) => (
+                            <Dropdown.Item
+                              key={cat + i}
+                              onClick={() => setCategory(cat)}
+                              style={{
+                                width: '16em',
+                                borderRadius: '.3em',
+                                fontSize: '2em',
+                                lineHeight: '1.7em',
+                              }}
+                            >
+                              {cat}
+                            </Dropdown.Item>
+                          ))}
+                        </DropdownButton>
+                      </div>
+                    </div>
+                  </form>
 
-                        <h4 className="title-create-item">Title</h4>
-                        <input
-                          type="text"
-                          placeholder={title}
-                          onChange={(e) => setTitle(e.target.value)}
-                        />
-
-                        <h4 className="title-create-item">Description</h4>
-                        <textarea placeholder="e.g. “This is very limited item”"></textarea>
-                      </form>
-                    </TabPanel>
-                    <TabPanel>
-                      <form action="#">
-                        <h4 className="title-create-item">Price</h4>
-                        <input
-                          type="text"
-                          placeholder="Enter price for one item (ETH)"
-                        />
-
-                        <h4 className="title-create-item">Minimum bid</h4>
-                        <input type="text" placeholder="enter minimum bid" />
-
-                        <div className="row">
-                          <div className="col-md-6">
-                            <h5 className="title-create-item">Starting date</h5>
-                            <input
-                              type="date"
-                              name="bid_starting_date"
-                              id="bid_starting_date2"
-                              className="form-control"
-                              min="1997-01-01"
-                            />
-                          </div>
-                          <div className="col-md-6">
-                            <h4 className="title-create-item">
-                              Expiration date
-                            </h4>
-                            <input
-                              type="date"
-                              name="bid_expiration_date"
-                              id="bid_expiration_date2"
-                              className="form-control"
-                            />
-                          </div>
-                        </div>
-
-                        <h4 className="title-create-item">Title</h4>
-                        <input type="text" placeholder="Item Name" />
-
-                        <h4 className="title-create-item">Description</h4>
-                        <textarea placeholder="e.g. “This is very limited item”"></textarea>
-                      </form>
-                    </TabPanel>
-
-                    <h4
-                      style={{ marginTop: '20px' }}
-                      className="title-create-item"
-                    >
-                      Select method
-                    </h4>
-                    <TabList>
-                      <Tab>
-                        <span className="icon-fl-tag"></span>Fixed Price
-                      </Tab>
-                      <Tab>
-                        <span className="icon-fl-clock"></span>Time Auctions
-                      </Tab>
-                      <Tab>
-                        <span className="icon-fl-icon-22"></span>Open For Bids
-                      </Tab>
-                    </TabList>
-                  </Tabs>
+                  <h4
+                    style={{ marginTop: '20px' }}
+                    className="title-create-item"
+                  >
+                    Ship It!
+                  </h4>
+                  <Button
+                    style={{
+                      width: '20%',
+                      fontSize: '1.4em',
+                      borderRadius: '.3em',
+                      fontWeight: 'bold',
+                      lineHeight: '2.5em',
+                    }}
+                    onClick={() =>
+                      setAsset({
+                        variables: {
+                          title: nft.title,
+                          description: nft.description,
+                          price: nft.price,
+                          category: nft.category,
+                          token: 'XTZ',
+                        },
+                      })
+                    }
+                  >
+                    Do It!
+                  </Button>
                 </div>
               </div>
             </div>
