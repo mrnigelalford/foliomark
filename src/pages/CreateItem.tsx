@@ -106,15 +106,28 @@ const CreateItem = () => {
     royalties: royaltyPercent,
     quantity,
     license,
-    img,
+    fullImg: img,
+    token: Token.XTZ,
   };
 
-  const setNFT = async (nft: NFT) => {
+  const setNFT = async () => {
     const imgURL = await getBucketImageAddress(rawImg);
 
-    if (imgURL.data) {
+    console.log('nft: ', nft);
+
+    if (imgURL.data && nft.title) {
       nft.fullImg = imgURL.data;
-      setAsset({ variables: { nft } });
+      setAsset({
+        variables: {
+          title: nft.title,
+          description: nft.description,
+          price: nft.price,
+          category: nft.category,
+          token: 'XTZ',
+          previewImg: imgURL.data,
+          fullImg: imgURL.data,
+        },
+      });
     }
   };
 
@@ -374,15 +387,7 @@ const CreateItem = () => {
                       fontWeight: 'bold',
                       lineHeight: '2.5em',
                     }}
-                    onClick={() =>
-                      setNFT({
-                        title: nft.title,
-                        description: nft.description,
-                        price: nft.price,
-                        category: nft.category,
-                        token: Token.XTZ,
-                      })
-                    }
+                    onClick={() => setNFT()}
                   >
                     Do It!
                   </Button>

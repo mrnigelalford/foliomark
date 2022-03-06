@@ -28,6 +28,8 @@ export const SET_ASSET = gql`
     $price: Int
     $category: Category
     $token: Token
+    $fullImg: String
+    $previewImg: String
   ) {
     setAsset(
       title: $title
@@ -35,6 +37,8 @@ export const SET_ASSET = gql`
       price: $price
       category: $category
       token: $token
+      fullImg: $fullImg
+      previewImg: $previewImg
     ) {
       id
     }
