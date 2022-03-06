@@ -6,8 +6,10 @@ import Countdown from 'react-countdown';
 import 'react-tabs/style/react-tabs.css';
 import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import { Slider } from 'primereact/slider';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { SET_ASSET } from '../graphql/assets';
+import { NFT } from '../types/NFT.types';
+import { Token } from '../types/Auction.types';
 
 const avt =
   'https://backend.kukai.network/file/6vbjqvhb5plxaoi7jrdmghykuwloba_raw.png';
@@ -44,6 +46,31 @@ const getBase64 = (file) => {
   });
 };
 
+const uploadServerURL = process.env.uploadServer;
+
+const getBucketImageAddress = (
+  files: Array<File>
+): Promise<{ message: string; data: string }> => {
+  return new Promise((resolve, reject) => {
+    var formData: any = new FormData();
+    var xhr = new XMLHttpRequest();
+    formData.append('file', files[0]);
+
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          alert('successfully uploaded image into storgae blob');
+          resolve(JSON.parse(xhr.response));
+        } else {
+          reject(xhr.response);
+        }
+      }
+    };
+    xhr.open('POST', uploadServerURL, true);
+    xhr.send(formData);
+  });
+};
+
 const CreateItem = () => {
   const [title, setTitle] = React.useState('Item Name');
   const [price, setPrice] = React.useState(0);
@@ -54,10 +81,13 @@ const CreateItem = () => {
   const [royaltyAddress, setRoyaltyAddress] = React.useState('');
   const [royaltyPercent, setRoyaltyPercent] = React.useState(0);
   const [img, setImg] = React.useState<string>();
+  const [rawImg, setRawImg] = React.useState<File[]>();
+
+  const [setAsset] = useMutation(SET_ASSET);
 
   const onFileInputChange = (e) => {
     if (e) {
-      console.log('e: ', typeof e.target.files[0]);
+      setRawImg(e.target.files);
       getBase64(e.target.files[0]).then((data) => {
         if (data && typeof data === 'string') setImg(data);
       });
@@ -75,7 +105,14 @@ const CreateItem = () => {
     img,
   };
 
-  const [setAsset, { data, loading, error }] = useMutation(SET_ASSET);
+  const setNFT = async (nft: NFT) => {
+    const imgURL = await getBucketImageAddress(rawImg);
+
+    if (imgURL.data) {
+      nft.fullImg = imgURL.data;
+      setAsset({ variables: { nft } });
+    }
+  };
 
   return (
     <div className="create-item">
@@ -334,14 +371,12 @@ const CreateItem = () => {
                       lineHeight: '2.5em',
                     }}
                     onClick={() =>
-                      setAsset({
-                        variables: {
-                          title: nft.title,
-                          description: nft.description,
-                          price: nft.price,
-                          category: nft.category,
-                          token: 'XTZ',
-                        },
+                      setNFT({
+                        title: nft.title,
+                        description: nft.description,
+                        price: nft.price,
+                        category: nft.category,
+                        token: Token.XTZ,
                       })
                     }
                   >
