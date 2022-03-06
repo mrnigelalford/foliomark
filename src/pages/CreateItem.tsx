@@ -58,15 +58,19 @@ const getBucketImageAddress = (
 
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          alert('successfully uploaded image into storgae blob');
+        if (xhr.status >= 200) {
+          console.log('upload success: ', xhr.responseText);
           resolve(JSON.parse(xhr.response));
         } else {
           reject(xhr.response);
         }
       }
     };
-    xhr.open('POST', uploadServerURL, true);
+    xhr.open(
+      'POST',
+      'https://upload-server-dot-foliomark.uc.r.appspot.com/uploads',
+      true
+    );
     xhr.send(formData);
   });
 };
