@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Tezos } from '../State/Tezos';
 
 const ConnectButton = (): JSX.Element => {
   const [loadingNano, setLoadingNano] = useState<boolean>(false);
+  const [localUserAddress, setLocalUserAddress] = useState<string>();
   const { setWallet, userAddress, disconnectWallet } = Tezos();
 
   const ConnectButtons = () => (
@@ -33,9 +34,26 @@ const ConnectButton = (): JSX.Element => {
     </button>
   );
 
+  // use local storage to prevent the user from re-logging in
+
+  useEffect(() => {
+    const localBeacon = localStorage.getItem('beacon:accounts');
+    const userAddress = JSON.parse(localBeacon)[0].address;
+
+    console.log('bruh: ', JSON.parse(localBeacon)[0]);
+
+    if (userAddress) {
+      setLocalUserAddress(userAddress);
+    }
+  }, [userAddress]);
+
   return (
     <div className="buttons">
-      {userAddress ? <DisconnectButton /> : <ConnectButtons />}
+      {userAddress || localUserAddress ? (
+        <DisconnectButton />
+      ) : (
+        <ConnectButtons />
+      )}
     </div>
   );
 };

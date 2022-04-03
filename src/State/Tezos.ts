@@ -1,10 +1,6 @@
 import { TezosToolkit } from '@taquito/taquito';
 import { BeaconWallet } from '@taquito/beacon-wallet';
-import {
-  NetworkType,
-  BeaconEvent,
-  defaultEventCallbacks,
-} from '@airgap/beacon-sdk';
+import { NetworkType } from '@airgap/beacon-sdk';
 import { useState } from 'react';
 
 const contractAddress = 'KT1AKo12GNP3VF7t9z4CXi8WooLBph9EXzPN'; // Hangzhounet location of the smart contract
@@ -20,8 +16,9 @@ export const Tezos = () => {
   const [contract, setContract] = useState<any>();
 
   const setContractState = async (userAddress: string): Promise<void> => {
-    console.log('ua: ', userAddress);
     // set user balance
+    if (!userAddress) setUserAddress(userAddress);
+
     const balance = (await Tezos.tz.getBalance(userAddress)).toNumber();
     setUserBalance(balance);
 
@@ -32,45 +29,46 @@ export const Tezos = () => {
     setStorage(storage);
   };
 
+  const setActiveAccount = async (wallet: BeaconWallet) => {
+    const userAddress = await wallet.getPKH();
+    console.log('preset user address: ', userAddress);
+    setUserAddress(userAddress);
+    await setContractState(userAddress);
+  };
+
   const setWallet = async () => {
-    const wallet = new BeaconWallet({
-      name: 'Portfolio Marketplace',
-      preferredNetwork: NetworkType.HANGZHOUNET,
-      disableDefaultEvents: true, // Disable all events / UI. This also disables the pairing alert.
-      eventHandlers: {
-        // To keep the pairing alert, we have to add the following default event handlers back
-        [BeaconEvent.PAIR_INIT]: {
-          handler: defaultEventCallbacks.PAIR_INIT,
-        },
-        [BeaconEvent.PAIR_SUCCESS]: {
-          handler: ({ publicKey }) => setPublicToken(publicKey),
-        },
-      },
-    });
+    let wallet;
+    if (activeWallet) wallet = activeWallet;
+    else
+      wallet = new BeaconWallet({
+        name: 'Portfolio Marketplace',
+        preferredNetwork: NetworkType.HANGZHOUNET,
+      });
 
-    await wallet.requestPermissions({
-      network: {
-        type: NetworkType.HANGZHOUNET,
-        rpcUrl: 'https://hangzhounet.api.tez.ie',
-      },
-    });
-
-    Tezos.setWalletProvider(wallet);
-    setActiveWallet(wallet);
-    // checks if wallet was connected before
     const activeAccount = await wallet.client.getActiveAccount();
+
     if (activeAccount) {
-      const userAddress = await wallet.getPKH();
-      setUserAddress(userAddress);
-      await setContractState(userAddress);
+      setActiveAccount(wallet);
+    } else {
+      await wallet.client.requestPermissions({
+        network: {
+          type: NetworkType.HANGZHOUNET,
+          rpcUrl: 'https://hangzhounet.api.tez.ie',
+        },
+      });
+      await setActiveAccount(wallet);
+      // Tezos.setWalletProvider(wallet);
     }
+
+    setActiveWallet(wallet);
+    setPublicToken(wallet.publicKey);
   };
 
   const disconnectWallet = async (): Promise<void> => {
     //window.localStorage.clear();
     setUserAddress('');
     setUserBalance(0);
-    activeWallet.disconnect();
+    activeWallet.clearActiveAccount();
 
     setPublicToken(null);
     console.log('disconnecting wallet');
@@ -81,8 +79,6 @@ export const Tezos = () => {
       await activeWallet.client.destroy();
     }
   };
-
-  // public async setTezos() {}
 
   // const connectNano = async (): Promise<void> => {
   //   try {
@@ -107,5 +103,6 @@ export const Tezos = () => {
     userAddress,
     disconnectWallet,
     userBalance,
+    setContractState,
   };
 };
