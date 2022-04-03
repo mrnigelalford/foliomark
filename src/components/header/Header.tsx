@@ -1,16 +1,21 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import menus from '../../pages/menu';
 import DarkMode from './DarkMode';
-import logoheader from '../../assets/images/logo/logo.png';
-import logoheader2x from '../../assets/images/logo/logo@2x.png';
-import logodark from '../../assets/images/logo/logo_dark.png';
-import logodark2x from '../../assets/images/logo/logo_dark@2x.png';
-import imgsun from '../../assets/images/icon/sun.png';
-import avt from '../../assets/images/avatar/avt-2.jpg';
-import { connectWallet } from './WalletButon';
 
-const Header = () => {
+import ConnectButton from '../ConnectWallet';
+
+interface HeaderProps {
+  mint?: {
+    variables: {
+      ownerAddress: string;
+      contractAddress: string;
+      tokens: { id: number; uri: string }[];
+    };
+  };
+}
+
+const Header = (props: HeaderProps) => {
   const { pathname } = useLocation();
 
   const headerRef = useRef(null);
@@ -59,20 +64,8 @@ const Header = () => {
                 <div id="site-logo" className="clearfix">
                   <div id="site-logo-inner">
                     <Link to="/" rel="home" className="main-logo">
-                      <img
-                        className="logo-dark"
-                        id="logo_header"
-                        src={logodark}
-                        srcSet={`${logodark2x}`}
-                        alt="nft-gaming"
-                      />
-                      <img
-                        className="logo-light"
-                        id="logo_header"
-                        src={logoheader}
-                        srcSet={`${logoheader2x}`}
-                        alt="nft-gaming"
-                      />
+                      {' '}
+                      FolioMark
                     </Link>
                   </div>
                 </div>
@@ -135,7 +128,7 @@ const Header = () => {
                           placeholder="Search..."
                           name="s"
                           title="Search for"
-                          required=""
+                          required
                         />
                         <button
                           className="search search-submit"
@@ -152,13 +145,7 @@ const Header = () => {
                     </div>
                   </div>
                   <div className="sc-btn-top mg-r-12" id="site-header">
-                    <div
-                      className="sc-button header-slider style"
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => connectWallet()}
-                    >
-                      Wallet connect
-                    </div>
+                    <ConnectButton />
                   </div>
 
                   <div className="admin_active" id="header_admin">
@@ -168,7 +155,7 @@ const Header = () => {
                           2.45 <strong>ETH</strong>{' '}
                         </span>
                       </div>
-                      <img className="avatar" src={avt} alt="avatar" />
+                      {/* <img className="avatar" src={avt} alt="avatar" /> */}
                       <div className="avatar_popup mt-20">
                         <div className="d-flex align-items-center copy-text justify-content-between">
                           <span> 13b9ebda035r178... </span>
@@ -177,7 +164,7 @@ const Header = () => {
                           </Link>
                         </div>
                         <div className="d-flex align-items-center mt-10">
-                          <img className="coin" src={imgsun} alt="/" />
+                          {/* <img className="coin" src={imgsun} alt="/" /> */}
                           <div className="info ml-10">
                             <p className="text-sm font-book text-gray-400">
                               Balance
