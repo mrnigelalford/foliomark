@@ -85,13 +85,13 @@ const TodayPicksItem = ({ item }) => (
       <div className="meta-info">
         <div className="author">
           <div className="avatar">
-            <img src={item.author.img} alt="Axies" />
+            <img src={item?.author?.img || ''} alt="Axies" />
           </div>
           <div className="info">
             <span>Creator</span>
             <h6>
               {' '}
-              <Link to="/authors-02">{item.author.bioLink}</Link>{' '}
+              <Link to="/authors-02">{item?.author?.bioLink || ''}</Link>{' '}
             </h6>
           </div>
         </div>

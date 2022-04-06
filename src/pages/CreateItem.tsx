@@ -84,8 +84,16 @@ const CreateItem = () => {
   const [royaltyPercent, setRoyaltyPercent] = React.useState(0);
   const [img, setImg] = React.useState<string>();
   const [rawImg, setRawImg] = React.useState<File[]>();
+  const [address, setAddress] = React.useState<string>();
 
-  const { setOriginate } = Tezos();
+  const { setOriginate, walletAddress } = Tezos();
+
+  walletAddress.subscribe({
+    next: (a) => {
+      console.log('word: ', a);
+      setAddress(a);
+    },
+  });
 
   const onFileInputChange = (e) => {
     if (e) {
@@ -366,7 +374,8 @@ const CreateItem = () => {
                       fontWeight: 'bold',
                       lineHeight: '2.5em',
                     }}
-                    onClick={() => setOriginate()}
+                    disabled={!address}
+                    onClick={setOriginate}
                   >
                     Do It!
                   </Button>

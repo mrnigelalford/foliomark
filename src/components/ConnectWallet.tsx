@@ -3,8 +3,33 @@ import { Tezos } from '../State/Tezos';
 
 const ConnectButton = (): JSX.Element => {
   const [loadingNano, setLoadingNano] = useState<boolean>(false);
-  const [localUserAddress, setLocalUserAddress] = useState<string>();
-  const { setWallet, userAddress, disconnectWallet } = Tezos();
+  const [localUserAddress, setLocalUserAddress] = useState<string>('');
+  const { setWallet, walletAddress, disconnectWallet, userBalance } = Tezos();
+
+  // use local storage to prevent the user from re-logging in
+
+  // useEffect(() => {
+  //   const localBeacon = localStorage.getItem('beacon:accounts');
+  //   if (!JSON.parse(localBeacon)) return;
+  //   const userAddress = JSON.parse(localBeacon)[0].address;
+
+  //   if (userAddress) {
+  //     setLocalUserAddress(userAddress);
+  //   }
+  // }, [walletAddress]);
+
+  walletAddress.subscribe({
+    next: (u) => {
+      console.log('user: ', u);
+      setLocalUserAddress(u);
+    },
+  });
+
+  userBalance.subscribe({
+    next: (u) => {
+      console.log('ub: ', u);
+    },
+  });
 
   const ConnectButtons = () => (
     <div>
@@ -29,31 +54,17 @@ const ConnectButton = (): JSX.Element => {
   );
 
   const DisconnectButton = () => (
-    <button className="button" onClick={disconnectWallet}>
-      <i className="fas fa-times"></i>&nbsp; Disconnect wallet
-    </button>
+    <div>
+      <p>{localUserAddress}</p>
+      <button className="button" onClick={disconnectWallet}>
+        <i className="fas fa-times"></i>&nbsp; Disconnect wallet
+      </button>
+    </div>
   );
-
-  // use local storage to prevent the user from re-logging in
-
-  useEffect(() => {
-    const localBeacon = localStorage.getItem('beacon:accounts');
-    const userAddress = JSON.parse(localBeacon)[0].address;
-
-    console.log('bruh: ', JSON.parse(localBeacon)[0]);
-
-    if (userAddress) {
-      setLocalUserAddress(userAddress);
-    }
-  }, [userAddress]);
 
   return (
     <div className="buttons">
-      {userAddress || localUserAddress ? (
-        <DisconnectButton />
-      ) : (
-        <ConnectButtons />
-      )}
+      {localUserAddress ? <DisconnectButton /> : <ConnectButtons />}
     </div>
   );
 };

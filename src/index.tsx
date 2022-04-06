@@ -7,8 +7,11 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import { Tezos } from './State/Tezos';
 
-let grapqhlEndpoint = 'https://us-central1-foliomark.cloudfunctions.net/web';
+// let grapqhlEndpoint = 'https://us-central1-foliomark.cloudfunctions.net/web';
+let grapqhlEndpoint = 'http://localhost:4000/';
+const { getLocalStorage } = Tezos();
 
 // if (
 //   process.env.REACT_APP_ENV === 'develop' &&
@@ -21,6 +24,8 @@ const client = new ApolloClient({
   uri: grapqhlEndpoint,
   cache: new InMemoryCache(),
 });
+
+getLocalStorage();
 
 ReactDOM.render(
   <BrowserRouter>

@@ -4,7 +4,9 @@ import menus from '../../pages/menu';
 import DarkMode from './DarkMode';
 
 import ConnectButton from '../ConnectWallet';
+import { Tezos } from '../../State/Tezos';
 
+const { getLocalStorage } = Tezos();
 interface HeaderProps {
   mint?: {
     variables: {
@@ -19,6 +21,10 @@ const Header = (props: HeaderProps) => {
   const { pathname } = useLocation();
 
   const headerRef = useRef(null);
+  useEffect(() => {
+    getLocalStorage();
+  }, []);
+
   useEffect(() => {
     window.addEventListener('scroll', isSticky);
     return () => {
@@ -53,7 +59,6 @@ const Header = (props: HeaderProps) => {
   const handleOnClick = (index) => {
     setActiveIndex(index);
   };
-
   return (
     <header id="header_main" className="header_1 js-header" ref={headerRef}>
       <div className="themesflat-container">
