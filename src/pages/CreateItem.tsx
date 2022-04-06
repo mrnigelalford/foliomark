@@ -6,10 +6,8 @@ import Countdown from 'react-countdown';
 import 'react-tabs/style/react-tabs.css';
 import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import { Slider } from 'primereact/slider';
-import { useMutation } from '@apollo/client';
-import { SET_ASSET } from '../graphql/assets';
-import { NFT } from '../types/NFT.types';
 import { Token } from '../types/Auction.types';
+import { Tezos } from '../State/Tezos';
 
 const avt =
   'https://backend.kukai.network/file/6vbjqvhb5plxaoi7jrdmghykuwloba_raw.png';
@@ -87,7 +85,7 @@ const CreateItem = () => {
   const [img, setImg] = React.useState<string>();
   const [rawImg, setRawImg] = React.useState<File[]>();
 
-  const [setAsset] = useMutation(SET_ASSET);
+  const { setOriginate } = Tezos();
 
   const onFileInputChange = (e) => {
     if (e) {
@@ -110,30 +108,11 @@ const CreateItem = () => {
     token: Token.XTZ,
   };
 
-  const setNFT = async () => {
-    const imgURL = await getBucketImageAddress(rawImg);
-
-    console.log('nft: ', nft);
-
-    if (imgURL.data && nft.title) {
-      nft.fullImg = imgURL.data;
-      setAsset({
-        variables: {
-          title: nft.title,
-          description: nft.description,
-          price: nft.price,
-          category: nft.category,
-          token: 'XTZ',
-          previewImg: imgURL.data,
-          fullImg: imgURL.data,
-        },
-      });
-    }
-  };
+  const [mint, setMint] = React.useState();
 
   return (
     <div className="create-item">
-      <Header />
+      <Header mint={mint} />
       <section className="flat-title-page inner">
         <div className="overlay"></div>
         <div className="themesflat-container">
@@ -387,7 +366,7 @@ const CreateItem = () => {
                       fontWeight: 'bold',
                       lineHeight: '2.5em',
                     }}
-                    onClick={() => setNFT()}
+                    onClick={() => setOriginate()}
                   >
                     Do It!
                   </Button>
