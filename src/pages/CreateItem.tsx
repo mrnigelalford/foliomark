@@ -7,7 +7,7 @@ import 'react-tabs/style/react-tabs.css';
 import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import { Slider } from 'primereact/slider';
 import { Token } from '../types/Auction.types';
-import { Tezos } from '../State/Tezos';
+import { TezosState } from '../State/Tezos';
 
 const avt =
   'https://backend.kukai.network/file/6vbjqvhb5plxaoi7jrdmghykuwloba_raw.png';
@@ -86,7 +86,7 @@ const CreateItem = () => {
   const [rawImg, setRawImg] = React.useState<File[]>();
   const [address, setAddress] = React.useState<string>();
 
-  const { setOriginate, walletAddress } = Tezos();
+  const { setOriginate, walletAddress } = TezosState();
 
   walletAddress.subscribe({
     next: (a) => {

@@ -20,7 +20,7 @@ const activeContractAddress = new Subject<string>();
 
 const tezosBlockchain = new TezosToolkit('https://hangzhounet.api.tez.ie');
 
-export const Tezos = () => {
+export const TezosState = () => {
   const ledger = new MichelsonMap(); // big map
   const metadata = new MichelsonMap(); // big map
   const operators = new MichelsonMap();

@@ -4,9 +4,9 @@ import menus from '../../pages/menu';
 import DarkMode from './DarkMode';
 
 import ConnectButton from '../ConnectWallet';
-import { Tezos } from '../../State/Tezos';
+import { TezosState } from '../../State/Tezos';
 
-const { getLocalStorage } = Tezos();
+const { getLocalStorage } = TezosState();
 interface HeaderProps {
   mint?: {
     variables: {
