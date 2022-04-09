@@ -1,8 +1,15 @@
-import { MichelsonMap, TezosToolkit } from '@taquito/taquito';
+import { compose, MichelsonMap, TezosToolkit } from '@taquito/taquito';
 import { BeaconWallet } from '@taquito/beacon-wallet';
-import { NetworkType, PermissionScope, Storage } from '@airgap/beacon-sdk';
+import { NetworkType, PermissionScope } from '@airgap/beacon-sdk';
 import smartContract from './smartContract';
 import { Subject } from 'rxjs';
+import { NFT } from '../types/NFT.types';
+import { tzip12 } from '@taquito/tzip12';
+import { tzip16, char2Bytes } from '@taquito/tzip16';
+import {
+  token_metadata,
+  token_metadata_0_token_info,
+} from './Tezos/setTokenMetadata';
 
 // const contractAddress = 'KT1AKo12GNP3VF7t9z4CXi8WooLBph9EXzPN'; // Hangzhounet location of the smart contract
 
@@ -18,16 +25,31 @@ const activeWallet = new Subject<BeaconWallet>();
 const userBalance = new Subject<number>();
 const activeContractAddress = new Subject<string>();
 
-const tezosBlockchain = new TezosToolkit('https://hangzhounet.api.tez.ie');
+const rpcUrl = 'https://hangzhounet.api.tez.ie';
+
+const tezos = new TezosToolkit(rpcUrl);
+
+// TODO: can we make origination be cheaper (0.755 ꜩ fee)
+// objkt comparison: https://tzkt.io/tz2APwAAPFedmMHAAEvgw6rkwhiXdTowapXM/operations/
+// TODO: create an admin address this should be hardcoded to help prevent users from overtaking you
+// TODO: kukai metadata walking to show properly in wallet
+// TODO: Do a user look up to find the available contract. --> user should select this contract from a dropdown
+
+//TODO: Start here - finish minting. There is a param issue on the mint with FA2. Check documentation for requirements
 
 export const TezosState = () => {
   const ledger = new MichelsonMap(); // big map
   const metadata = new MichelsonMap(); // big map
   const operators = new MichelsonMap();
-  const token_metadata = new MichelsonMap();
+  // const token_metadata = new MichelsonMap();
   const token_id = 0;
   const token_info = new MichelsonMap(); //map
   const total_supply = new MichelsonMap(); //big map
+  let balance = 0;
+  let contractAddress = 'KT1Roq4yG6AtjgDiKa5ARs9FHjwWzavQyfei';
+
+  userBalance.subscribe({ next: (b) => (balance = b) });
+  activeContractAddress.subscribe({ next: (c) => (contractAddress = c) });
 
   const setWallet = async () => {
     wallet = new BeaconWallet({
@@ -39,16 +61,16 @@ export const TezosState = () => {
       scopes,
       network: {
         type: NetworkType.HANGZHOUNET,
-        rpcUrl: 'https://hangzhounet.api.tez.ie',
+        rpcUrl,
       },
     });
 
-    tezosBlockchain.setWalletProvider(wallet);
+    tezos.setWalletProvider(wallet);
 
     activeWallet.next(wallet);
     walletAddress.next(await wallet.getPKH());
     userBalance.next(
-      (await tezosBlockchain.tz.getBalance(await wallet.getPKH())).toNumber()
+      (await tezos.tz.getBalance(await wallet.getPKH())).toNumber()
     );
   };
 
@@ -67,22 +89,28 @@ export const TezosState = () => {
 
     const admin = await wallet?.getPKH();
 
-    ledger.set({ 0: admin, 1: 20 }, 200); // temporary ledger setting for testing purposes ONLY
+    ledger.set({ 0: admin, 1: balance }, 200); // temporary ledger setting for testing purposes ONLY
+    token_metadata_0_token_info.set(
+      '',
+      char2Bytes('ipfs://QmetXCVSjKM8zS7sQcRm7Zg7T9touRru8emsnt7KbPLJVx')
+    );
+    token_metadata.set(0, {
+      token_id: 0,
+      token_info: token_metadata_0_token_info,
+    });
 
     if (smartContract) {
       const storage = {
-        admin,
-        all_tokens: [1],
         ledger,
-        metadata,
         operators,
+        metadata,
         token_metadata,
-        token_id,
-        token_info,
         total_supply,
+        all_tokens: [10],
+        admin,
       };
 
-      tezosBlockchain.wallet
+      tezos.wallet
         .originate({
           code: smartContract,
           storage,
@@ -115,6 +143,40 @@ export const TezosState = () => {
     }
   };
 
+  const setMint = async (nft: NFT) => {
+    const contract = await tezos.wallet.at(
+      contractAddress,
+      compose(tzip12, tzip16)
+    );
+
+    // const getIPFSData = await pinFileToIPFS(nft);
+
+    if (true) {
+      const mint = await contract.methodsObject
+        .mint([
+          {
+            to_: 'tz1PoPDTmv1hESn5JxwLRCL8r4ye3LV21p1a',
+            token_id: 123,
+            amount: 1,
+            // metadata: `ipfs://QmetXCVSjKM8zS7sQcRm7Zg7T9touRru8emsnt7KbPLJVx`,
+          },
+        ])
+        .send();
+
+      const receipt = mint.receipt[0];
+      return {
+        message: 'Success',
+        source: receipt['source'],
+        fee: receipt['fee'],
+        counter: receipt['counter'],
+        gas_limit: receipt['gas_limit'],
+        storage_limit: receipt['storage_limit'],
+        amount: receipt['amount'],
+        destination: receipt['destination'],
+      };
+    }
+  };
+
   // const connectNano = async (): Promise<void> => {
   //   try {
   //     const transport = await TransportU2F.create();
@@ -139,6 +201,7 @@ export const TezosState = () => {
     userBalance,
     setOriginate,
     getLocalStorage,
+    setMint,
   };
 };
 

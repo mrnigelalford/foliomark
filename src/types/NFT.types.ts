@@ -15,4 +15,5 @@ export interface NFT {
   category: string;
   views?: number;
   description: string;
+  rawImg?: File[];
 }

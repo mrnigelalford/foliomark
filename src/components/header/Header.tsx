@@ -7,17 +7,8 @@ import ConnectButton from '../ConnectWallet';
 import { TezosState } from '../../State/Tezos';
 
 const { getLocalStorage } = TezosState();
-interface HeaderProps {
-  mint?: {
-    variables: {
-      ownerAddress: string;
-      contractAddress: string;
-      tokens: { id: number; uri: string }[];
-    };
-  };
-}
 
-const Header = (props: HeaderProps) => {
+const Header = () => {
   const { pathname } = useLocation();
 
   const headerRef = useRef(null);
