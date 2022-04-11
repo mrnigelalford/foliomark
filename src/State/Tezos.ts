@@ -1,17 +1,10 @@
-import { compose, MichelsonMap, TezosToolkit } from '@taquito/taquito';
+import { MichelsonMap, TezosToolkit } from '@taquito/taquito';
 import { BeaconWallet } from '@taquito/beacon-wallet';
-import { NetworkType, PermissionScope } from '@airgap/beacon-sdk';
-import smartContract from './smartContract';
+import { NetworkType, PermissionScope, DAppClient } from '@airgap/beacon-sdk';
 import { Subject } from 'rxjs';
 import { NFT } from '../types/NFT.types';
-import { tzip12 } from '@taquito/tzip12';
-import { tzip16, char2Bytes } from '@taquito/tzip16';
-import {
-  token_metadata,
-  token_metadata_0_token_info,
-} from './Tezos/setTokenMetadata';
 
-// const contractAddress = 'KT1AKo12GNP3VF7t9z4CXi8WooLBph9EXzPN'; // Hangzhounet location of the smart contract
+import { code, getStorage } from './Tezos/output';
 
 const scopes: PermissionScope[] = [
   PermissionScope.OPERATION_REQUEST,
@@ -19,6 +12,8 @@ const scopes: PermissionScope[] = [
 ];
 
 let wallet: BeaconWallet;
+let currentAddress;
+let contractAddress = 'KT1F6TY2J9wXjDp4fi7ZdTp3g7GVBVjSwfU6'; // Hangzhounet location of the smart contract
 
 const walletAddress = new Subject<string>();
 const activeWallet = new Subject<BeaconWallet>();
@@ -27,17 +22,8 @@ const activeContractAddress = new Subject<string>();
 
 const rpcUrl = 'https://hangzhounet.api.tez.ie';
 
-const tezos = new TezosToolkit(rpcUrl);
-
-// TODO: can we make origination be cheaper (0.755 ꜩ fee)
-// objkt comparison: https://tzkt.io/tz2APwAAPFedmMHAAEvgw6rkwhiXdTowapXM/operations/
-// TODO: create an admin address this should be hardcoded to help prevent users from overtaking you
-// TODO: kukai metadata walking to show properly in wallet
-// TODO: Do a user look up to find the available contract. --> user should select this contract from a dropdown
-
-//TODO: Start here - finish minting. There is a param issue on the mint with FA2. Check documentation for requirements
-
 export const TezosState = () => {
+  const tezos = new TezosToolkit(rpcUrl);
   const ledger = new MichelsonMap(); // big map
   const metadata = new MichelsonMap(); // big map
   const operators = new MichelsonMap();
@@ -46,10 +32,15 @@ export const TezosState = () => {
   const token_info = new MichelsonMap(); //map
   const total_supply = new MichelsonMap(); //big map
   let balance = 0;
-  let contractAddress = 'KT1Roq4yG6AtjgDiKa5ARs9FHjwWzavQyfei';
 
   userBalance.subscribe({ next: (b) => (balance = b) });
   activeContractAddress.subscribe({ next: (c) => (contractAddress = c) });
+
+  walletAddress.subscribe({
+    next: (a) => (currentAddress = a),
+  });
+
+  const dAppClient = new DAppClient({ name: 'Portfolio Marketplace' });
 
   const setWallet = async () => {
     wallet = new BeaconWallet({
@@ -87,95 +78,86 @@ export const TezosState = () => {
   const setOriginate = async () => {
     if (!wallet) await setWallet();
 
-    const admin = await wallet?.getPKH();
+    if (await wallet.client.getActiveAccount()) {
+      const storage = getStorage(currentAddress);
+      const contractCode = code;
 
-    ledger.set({ 0: admin, 1: balance }, 200); // temporary ledger setting for testing purposes ONLY
-    token_metadata_0_token_info.set(
-      '',
-      char2Bytes('ipfs://QmetXCVSjKM8zS7sQcRm7Zg7T9touRru8emsnt7KbPLJVx')
-    );
-    token_metadata.set(0, {
-      token_id: 0,
-      token_info: token_metadata_0_token_info,
-    });
-
-    if (smartContract) {
-      const storage = {
-        ledger,
-        operators,
-        metadata,
-        token_metadata,
-        total_supply,
-        all_tokens: [10],
-        admin,
-      };
-
-      tezos.wallet
-        .originate({
-          code: smartContract,
-          storage,
-        })
-        .send()
-        .then((originationOp) => {
-          console.log(
-            `Waiting for confirmation of origination...`,
-            originationOp
-          );
-          return originationOp.contract();
-        })
-        .then((contract) => {
-          console.log(`Origination completed for `, contract);
-          activeContractAddress.next(contract.address);
-        })
-        .catch((error) => console.log('Error: ', error));
+      if (contractCode && storage) {
+        tezos.wallet
+          .originate({
+            code: contractCode,
+            init: storage,
+          })
+          .send()
+          .then((originationOp) => {
+            console.log(
+              `Waiting for confirmation of origination...`,
+              originationOp
+            );
+            return originationOp.contract();
+          })
+          .then((contract) => {
+            console.log(`Origination completed for `, contract);
+            activeContractAddress.next(contract.address);
+          })
+          .catch((error) => console.log('Error: ', error));
+      }
     }
-    return {
-      status: 'error',
-    };
   };
 
   const getLocalStorage = async () => {
     const localAccount = JSON.parse(localStorage.getItem('beacon:accounts'))[0]
       .address;
     if (localAccount) {
-      console.log('local storage found', localAccount);
+      // console.log('local storage found', localAccount);
       walletAddress.next(localAccount);
     }
   };
 
   const setMint = async (nft: NFT) => {
-    const contract = await tezos.wallet.at(
-      contractAddress,
-      compose(tzip12, tzip16)
-    );
+    const address = await wallet.client.getActiveAccount();
+    const contract = await tezos.wallet.at(contractAddress);
+    let publicKey = address.publicKey;
 
-    // const getIPFSData = await pinFileToIPFS(nft);
+    console.log('a: ', publicKey);
 
-    if (true) {
-      const mint = await contract.methodsObject
-        .mint([
-          {
-            to_: 'tz1PoPDTmv1hESn5JxwLRCL8r4ye3LV21p1a',
-            token_id: 123,
-            amount: 1,
-            // metadata: `ipfs://QmetXCVSjKM8zS7sQcRm7Zg7T9touRru8emsnt7KbPLJVx`,
-          },
-        ])
-        .send();
+    // const getIPFSData = await pinFileToIPFS(nft); await this to be true
+    const mint = await contract.methods.mint().send();
 
-      const receipt = mint.receipt[0];
-      return {
-        message: 'Success',
-        source: receipt['source'],
-        fee: receipt['fee'],
-        counter: receipt['counter'],
-        gas_limit: receipt['gas_limit'],
-        storage_limit: receipt['storage_limit'],
-        amount: receipt['amount'],
-        destination: receipt['destination'],
-      };
-    }
+    const receipt = mint.receipt[0];
+    return {
+      message: 'Success',
+      source: receipt['source'],
+      fee: receipt['fee'],
+      counter: receipt['counter'],
+      gas_limit: receipt['gas_limit'],
+      storage_limit: receipt['storage_limit'],
+      amount: receipt['amount'],
+      destination: receipt['destination'],
+    };
   };
+
+  /*
+  [
+    {
+      itokenid: 1,
+      iowner: publicKey,
+      itokenMetadata: '',
+      iroyalties: [
+        {
+          partAccount: publicKey,
+          partValue: 5,
+        },
+      ],
+    },
+  ]
+
+  */
+
+  // iowner: currentAddress || 'tz1PoPDTmv1hESn5JxwLRCL8r4ye3LV21p1a',
+  // itokenid: 123,
+  // amount: 1,
+  // itokenMetadata: `ipfs://QmetXCVSjKM8zS7sQcRm7Zg7T9touRru8emsnt7KbPLJVx`,
 
   // const connectNano = async (): Promise<void> => {
   //   try {

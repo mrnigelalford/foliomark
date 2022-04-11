@@ -4,17 +4,11 @@ import menus from '../../pages/menu';
 import DarkMode from './DarkMode';
 
 import ConnectButton from '../ConnectWallet';
-import { TezosState } from '../../State/Tezos';
-
-const { getLocalStorage } = TezosState();
 
 const Header = () => {
   const { pathname } = useLocation();
 
   const headerRef = useRef(null);
-  useEffect(() => {
-    getLocalStorage();
-  }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', isSticky);

@@ -86,13 +86,10 @@ const CreateItem = () => {
   const [rawImg, setRawImg] = React.useState<File[]>();
   const [address, setAddress] = React.useState<string>();
 
-  const { setOriginate, walletAddress } = TezosState();
+  const { setOriginate, walletAddress, setMint } = TezosState();
 
   walletAddress.subscribe({
-    next: (a) => {
-      console.log('word: ', a);
-      setAddress(a);
-    },
+    next: (a) => setAddress(a),
   });
 
   const onFileInputChange = (e) => {
@@ -114,13 +111,12 @@ const CreateItem = () => {
     license,
     fullImg: img,
     token: Token.XTZ,
+    rawImg,
   };
-
-  const [mint, setMint] = React.useState();
 
   return (
     <div className="create-item">
-      <Header mint={mint} />
+      <Header />
       <section className="flat-title-page inner">
         <div className="overlay"></div>
         <div className="themesflat-container">
@@ -377,7 +373,20 @@ const CreateItem = () => {
                     disabled={!address}
                     onClick={setOriginate}
                   >
-                    Do It!
+                    Originate
+                  </Button>
+                  <Button
+                    style={{
+                      width: '20%',
+                      fontSize: '1.4em',
+                      borderRadius: '.3em',
+                      fontWeight: 'bold',
+                      lineHeight: '2.5em',
+                    }}
+                    disabled={!address}
+                    onClick={() => setMint(nft)}
+                  >
+                    Mint It!
                   </Button>
                 </div>
               </div>

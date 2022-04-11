@@ -29,46 +29,6 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
 ### GraphQL
 
 [Playground](https://studio.apollographql.com/sandbox/explorer) to test graphql
@@ -89,9 +49,26 @@ punky2: https://backend.kukai.network/file/qcrrdl55h36y7y3jcmowixeaqakkab_raw.jp
 
 ratbatkat: https://backend.kukai.network/file/hffkpew5xf4kppkd5ffmscgicsna5j_raw.jpeg
 
+## Testnet Info
+
+[Kukai Wallet](https://hangzhounet.kukai.app/account/tz1PoPDTmv1hESn5JxwLRCL8r4ye3LV21p1a)
+[TZKT-View-of-Account](https://hangzhounet.tzkt.io/KT1Roq4yG6AtjgDiKa5ARs9FHjwWzavQyfei/storage/228456)
+[deployed testnet contract](https://tzkt.io/KT1FA9UaQLccspooEDMFDxaD3Uo53yyZEEtd/entrypoints)
+
+## Helpful Documentation
+
+[OpenTezos](https://opentezos.com/)
+[archetype](https://docs.archetype-lang.org/contract-library/tokens/fa-1.2/formal-properties)
+[Taquito Documentation](https://tezostaquito.io/docs/quick_start)
+[Michelson Reference](https://liquidity-lang.org/doc/reference/michelson.html?highlight=if_left)
+
 ### Future Improvments
 
 - img resizer function
   - when added an image is resized to fit different use cases
   - caching
   - analytics to drive site data (page views)
+
+#### [Worklog](worklog.md)
+
+All work is captured here, curent, backlog and anything important that's happening in real-time
