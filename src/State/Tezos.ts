@@ -4,7 +4,7 @@ import { NetworkType, PermissionScope, DAppClient } from '@airgap/beacon-sdk';
 import { Subject } from 'rxjs';
 import { NFT } from '../types/NFT.types';
 
-import { code, getStorage } from './Tezos/output';
+import { code, getStorage } from './single_nft_smartcontract';
 
 const scopes: PermissionScope[] = [
   PermissionScope.OPERATION_REQUEST,
@@ -14,6 +14,7 @@ const scopes: PermissionScope[] = [
 let wallet: BeaconWallet;
 let currentAddress;
 let contractAddress = 'KT1F6TY2J9wXjDp4fi7ZdTp3g7GVBVjSwfU6'; // Hangzhounet location of the smart contract
+let balance;
 
 const walletAddress = new Subject<string>();
 const activeWallet = new Subject<BeaconWallet>();
@@ -24,14 +25,7 @@ const rpcUrl = 'https://hangzhounet.api.tez.ie';
 
 export const TezosState = () => {
   const tezos = new TezosToolkit(rpcUrl);
-  const ledger = new MichelsonMap(); // big map
   const metadata = new MichelsonMap(); // big map
-  const operators = new MichelsonMap();
-  // const token_metadata = new MichelsonMap();
-  const token_id = 0;
-  const token_info = new MichelsonMap(); //map
-  const total_supply = new MichelsonMap(); //big map
-  let balance = 0;
 
   userBalance.subscribe({ next: (b) => (balance = b) });
   activeContractAddress.subscribe({ next: (c) => (contractAddress = c) });
@@ -39,8 +33,6 @@ export const TezosState = () => {
   walletAddress.subscribe({
     next: (a) => (currentAddress = a),
   });
-
-  const dAppClient = new DAppClient({ name: 'Portfolio Marketplace' });
 
   const setWallet = async () => {
     wallet = new BeaconWallet({
@@ -186,5 +178,3 @@ export const TezosState = () => {
     setMint,
   };
 };
-
-//tz1PoPDTmv1hESn5JxwLRCL8r4ye3LV21p1a --> test user
