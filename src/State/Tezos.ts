@@ -12,7 +12,7 @@ const scopes: PermissionScope[] = [
 ];
 
 let wallet: BeaconWallet;
-let currentAddress;
+const oldContract = 'KT1AKo12GNP3VF7t9z4CXi8WooLBph9EXzPN';
 let contractAddress = 'KT1F6TY2J9wXjDp4fi7ZdTp3g7GVBVjSwfU6'; // Hangzhounet location of the smart contract
 let balance;
 
@@ -21,7 +21,8 @@ const activeWallet = new Subject<BeaconWallet>();
 const userBalance = new Subject<number>();
 const activeContractAddress = new Subject<string>();
 
-const rpcUrl = 'https://hangzhounet.api.tez.ie';
+const rpcUrl = 'https://ithacanet.ecadinfra.com';
+let currentWallet;
 
 export const TezosState = () => {
   const tezos = new TezosToolkit(rpcUrl);
@@ -29,6 +30,7 @@ export const TezosState = () => {
 
   userBalance.subscribe({ next: (b) => (balance = b) });
   activeContractAddress.subscribe({ next: (c) => (contractAddress = c) });
+  activeWallet.subscribe({ next: (w) => (currentWallet = w) });
 
   walletAddress.subscribe({
     next: (a) => (currentAddress = a),
@@ -37,13 +39,13 @@ export const TezosState = () => {
   const setWallet = async () => {
     wallet = new BeaconWallet({
       name: 'Portfolio Marketplace',
-      preferredNetwork: NetworkType.HANGZHOUNET,
+      preferredNetwork: NetworkType.ITHACANET,
     });
 
     await wallet.client.requestPermissions({
       scopes,
       network: {
-        type: NetworkType.HANGZHOUNET,
+        type: NetworkType.ITHACANET,
         rpcUrl,
       },
     });
@@ -70,7 +72,7 @@ export const TezosState = () => {
   const setOriginate = async () => {
     if (!wallet) await setWallet();
 
-    if (await wallet.client.getActiveAccount()) {
+    if (currentAddress) {
       const storage = getStorage(currentAddress);
       const contractCode = code;
 
