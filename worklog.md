@@ -18,8 +18,9 @@
 ## Todo Items
 
 read localstorage beacon info [done]
+smart contract origination [done]
 
-### Top Pdriority
+### Top Priority
 
 //TODO: Start here - finish minting. There is a param issue on the mint with FA2. Check documentation for requirements
 
