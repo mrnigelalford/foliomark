@@ -5,15 +5,17 @@ import { Subject } from 'rxjs';
 import { NFT } from '../types/NFT.types';
 
 import { code, getStorage } from './single_nft_smartcontract';
+import { castToBigNumber } from '@taquito/rpc';
 
 const scopes: PermissionScope[] = [
   PermissionScope.OPERATION_REQUEST,
   PermissionScope.SIGN,
 ];
 
+let currentAddress;
 let wallet: BeaconWallet;
 const oldContract = 'KT1AKo12GNP3VF7t9z4CXi8WooLBph9EXzPN';
-let contractAddress = 'KT1F6TY2J9wXjDp4fi7ZdTp3g7GVBVjSwfU6'; // Hangzhounet location of the smart contract
+let contractAddress = 'KT1Bp1rpSTQQLetHRVoi2wcPn5pMuNqe9sRX'; // Hangzhounet location of the smart contract
 let balance;
 
 const walletAddress = new Subject<string>();
@@ -35,6 +37,27 @@ export const TezosState = () => {
   walletAddress.subscribe({
     next: (a) => (currentAddress = a),
   });
+
+  const setTezos = async () => {
+    const Tezos = new TezosToolkit(rpcUrl);
+
+    const Wallet = new BeaconWallet({
+      name: 'Portfolio Marketplace',
+      preferredNetwork: NetworkType.ITHACANET,
+    });
+
+    await Wallet.client.requestPermissions({
+      scopes,
+      network: {
+        type: NetworkType.ITHACANET,
+        rpcUrl,
+      },
+    });
+
+    Tezos.setWalletProvider(Wallet);
+
+    return { Tezos, Wallet };
+  };
 
   const setWallet = async () => {
     wallet = new BeaconWallet({
@@ -70,14 +93,16 @@ export const TezosState = () => {
   };
 
   const setOriginate = async () => {
-    if (!wallet) await setWallet();
+    const { Tezos, Wallet } = await setTezos();
 
-    if (currentAddress) {
-      const storage = getStorage(currentAddress);
+    const { address } = await Wallet.client.getActiveAccount();
+
+    if (address) {
+      const storage = getStorage(address);
       const contractCode = code;
 
       if (contractCode && storage) {
-        tezos.wallet
+        Tezos.wallet
           .originate({
             code: contractCode,
             init: storage,
@@ -109,14 +134,27 @@ export const TezosState = () => {
   };
 
   const setMint = async (nft: NFT) => {
-    const address = await wallet.client.getActiveAccount();
+    const address = await currentWallet.client.getActiveAccount();
     const contract = await tezos.wallet.at(contractAddress);
-    let publicKey = address.publicKey;
 
-    console.log('a: ', publicKey);
+    await address.publicKey;
+    console.log('a: ', currentAddress, await address.publicKey);
 
     // const getIPFSData = await pinFileToIPFS(nft); await this to be true
-    const mint = await contract.methods.mint().send();
+
+    //TODO: START HERE -  this call is not sending out the network is timing out?
+    const mint = await contract.methodsObject
+      .mint({
+        itokenid: 10,
+        iowner: address.publicKey,
+        itokenMetadata: {
+          key: '',
+          value:
+            'ipfs://bafkreiaz7n5zj2qvtwmqnahz7rwt5h37ywqu7znruiyhwuav3rbbxzert4',
+        },
+        iroyalties: [{ partAccount: address.publicKey, partValue: 1000 }],
+      })
+      .send();
 
     const receipt = mint.receipt[0];
     return {
@@ -131,20 +169,54 @@ export const TezosState = () => {
     };
   };
 
-  /*
-  [
-    {
-      itokenid: 1,
-      iowner: publicKey,
-      itokenMetadata: '',
-      iroyalties: [
-        {
-          partAccount: publicKey,
-          partValue: 5,
+  const setMintOrg = async () => {
+    const { Tezos, Wallet } = await setTezos();
+
+    const { address } = await Wallet.client.getActiveAccount();
+    const contract = await Tezos.wallet.at(
+      'KT1Bp1rpSTQQLetHRVoi2wcPn5pMuNqe9sRX'
+    );
+
+    const tokenMetadata = MichelsonMap.fromLiteral({
+      'ipfs://QmetXCVSjKM8zS7sQcRm7Zg7T9touRru8emsnt7KbPLJVx': '',
+    });
+    tokenMetadata.set(
+      '',
+      'ipfs://QmetXCVSjKM8zS7sQcRm7Zg7T9touRru8emsnt7KbPLJVx'
+    );
+
+    contract.methods
+      .mint({
+        itokenid: 1,
+        iowner: address,
+        itokenMetadata: tokenMetadata,
+        iroyalties: {
+          partAccount: address,
+          partValue: 1000,
         },
-      ],
-    },
-  ]
+      })
+      .send()
+      .then((onFulfilled) => {
+        console.log('off: ', onFulfilled);
+      })
+      .then((hash) => {
+        console.log('completed: ', hash);
+      });
+  };
+
+  /*
+[
+        {
+          itokenid: 10,
+          iowner: address.publicKey,
+          itokenMetadata: {
+            key: '',
+            value:
+              'ipfs://bafkreiaz7n5zj2qvtwmqnahz7rwt5h37ywqu7znruiyhwuav3rbbxzert4',
+          },
+          iroyalties: [{ partAccount: address.publicKey, partValue: 1000 }],
+        },
+      ]
 
   */
 
@@ -178,5 +250,6 @@ export const TezosState = () => {
     setOriginate,
     getLocalStorage,
     setMint,
+    setMintOrg,
   };
 };
