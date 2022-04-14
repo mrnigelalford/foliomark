@@ -7,7 +7,7 @@ import 'react-tabs/style/react-tabs.css';
 import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import { Slider } from 'primereact/slider';
 import { Token } from '../types/Auction.types';
-import { TezosState } from '../State/Tezos';
+import Tezos from '../State/Tezos';
 
 const avt =
   'https://backend.kukai.network/file/6vbjqvhb5plxaoi7jrdmghykuwloba_raw.png';
@@ -73,7 +73,11 @@ const getBucketImageAddress = (
   });
 };
 
-const CreateItem = () => {
+type props = {
+  TezosState: Tezos;
+};
+
+const CreateItem = ({ TezosState }: props) => {
   const [title, setTitle] = React.useState('Item Name');
   const [price, setPrice] = React.useState(0);
   const [category, setCategory] = React.useState('Art');
@@ -85,12 +89,6 @@ const CreateItem = () => {
   const [img, setImg] = React.useState<string>();
   const [rawImg, setRawImg] = React.useState<File[]>();
   const [address, setAddress] = React.useState<string>();
-
-  const { setOriginate, walletAddress, setMint } = TezosState();
-
-  walletAddress.subscribe({
-    next: (a) => setAddress(a),
-  });
 
   const onFileInputChange = (e) => {
     if (e) {
@@ -116,7 +114,7 @@ const CreateItem = () => {
 
   return (
     <div className="create-item">
-      <Header />
+      <Header TezosState={TezosState} />
       <section className="flat-title-page inner">
         <div className="overlay"></div>
         <div className="themesflat-container">
@@ -371,7 +369,7 @@ const CreateItem = () => {
                       fontWeight: 'bold',
                       lineHeight: '2.5em',
                     }}
-                    onClick={setOriginate}
+                    onClick={TezosState.setOriginate}
                   >
                     Originate
                   </Button>
@@ -383,7 +381,7 @@ const CreateItem = () => {
                       fontWeight: 'bold',
                       lineHeight: '2.5em',
                     }}
-                    onClick={setMint}
+                    onClick={() => TezosState.setMint(nft)}
                   >
                     Mint It!
                   </Button>

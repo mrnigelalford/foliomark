@@ -1,7 +1,6 @@
 import { MichelsonMap, TezosToolkit } from '@taquito/taquito';
 import { BeaconWallet } from '@taquito/beacon-wallet';
 import { NetworkType, PermissionScope } from '@airgap/beacon-sdk';
-import { Subject } from 'rxjs';
 import { NFT } from '../types/NFT.types';
 
 import { code, getStorage } from './single_nft_smartcontract';
@@ -12,62 +11,45 @@ const scopes: PermissionScope[] = [
   PermissionScope.SIGN,
 ];
 
-let wallet: BeaconWallet;
-let contractAddress = 'KT1UpoPfyxmVrCEnvNGGPXa5zz7JmRk28y9j'; // Hangzhounet location of the smart contract
+export default class Tezos {
+  Tezos: TezosToolkit;
+  wallet: BeaconWallet;
+  rpcUrl = 'https://ithacanet.ecadinfra.com';
+  contractAddress = 'KT1UpoPfyxmVrCEnvNGGPXa5zz7JmRk28y9j'; // Ithacanet location of the smart contract
 
-const walletAddress = new Subject<string>();
-const activeWallet = new Subject<BeaconWallet>();
-const userBalance = new Subject<number>();
-const activeContractAddress = new Subject<string>();
-
-const rpcUrl = 'https://ithacanet.ecadinfra.com';
-
-export const TezosState = () => {
-  const setTezos = async (): Promise<{
-    Tezos: TezosToolkit;
-    Wallet: BeaconWallet;
-  }> => {
-    const Tezos = new TezosToolkit(rpcUrl);
-
-    const Wallet = new BeaconWallet({
+  setState = async () => {
+    this.Tezos = new TezosToolkit(this.rpcUrl);
+    this.wallet = new BeaconWallet({
       name: 'Portfolio Marketplace',
       preferredNetwork: NetworkType.ITHACANET,
     });
 
-    await Wallet.client.requestPermissions({
+    await this.wallet.client.requestPermissions({
       scopes,
       network: {
         type: NetworkType.ITHACANET,
-        rpcUrl,
+        rpcUrl: this.rpcUrl,
       },
     });
 
-    Tezos.setWalletProvider(Wallet);
-
-    return { Tezos, Wallet };
+    this.Tezos.setWalletProvider(this.wallet);
   };
 
-  const disconnectWallet = async (): Promise<void> => {
-    wallet.client.removeAllAccounts();
-    wallet.client.removeAllPeers();
-    wallet.client.destroy();
-
-    activeWallet.next();
-    userBalance.next();
-    walletAddress.next();
+  disconnectWallet = async (): Promise<void> => {
+    this.wallet.client.removeAllAccounts();
+    this.wallet.client.removeAllPeers();
+    this.wallet.client.destroy();
   };
 
-  const setOriginate = async () => {
-    const { Tezos, Wallet } = await setTezos();
-
-    const { address } = await Wallet.client.getActiveAccount();
+  setOriginate = async () => {
+    const { address } = await this.wallet.client.getActiveAccount();
 
     if (address) {
       const storage = getStorage(address);
       const contractCode = code;
 
       if (contractCode && storage) {
-        Tezos.wallet
+        this.Tezos.wallet
           .originate({
             code: contractCode,
             init: storage,
@@ -82,36 +64,32 @@ export const TezosState = () => {
           })
           .then((contract) => {
             console.log(`Origination completed for `, contract);
-            activeContractAddress.next(contract.address);
           })
           .catch((error) => console.log('Error: ', error));
       }
     }
   };
 
-  const getLocalStorage = async () => {
-    const localAccount = JSON.parse(localStorage.getItem('beacon:accounts'))[0]
-      .address;
-    if (localAccount) {
-      // console.log('local storage found', localAccount);
-      walletAddress.next(localAccount);
-    }
-  };
+  // getLocalStorage = async () => {
+  //   const localAccount = JSON.parse(localStorage.getItem('beacon:accounts'))[0]
+  //     .address;
+  //   if (localAccount) {
+  //     walletAddress.next(localAccount);
+  //   }
+  // };
 
-  const setMint = async (nft: NFT) => {
-    const { Tezos, Wallet } = await setTezos();
-
-    const { address } = await Wallet.client.getActiveAccount();
-    const contract = await Tezos.wallet.at(contractAddress);
-
+  setMint = async (nft: NFT) => {
+    if (!this.wallet) await this.setState();
+    const { address } = await this.wallet.client.getActiveAccount();
+    const contract = await this.Tezos.wallet.at(this.contractAddress);
     const ipfsData = await pinFileToIPFS(nft);
-
     const tMetadata = new MichelsonMap();
-    tMetadata.set(`ipfs://${ipfsData.IpfsHash}`, ''); // create retrieval method to pull the ipfs data in
+
+    tMetadata.set(`ipfs://${ipfsData.IpfsHash}`, '');
 
     contract.methodsObject
       .mint({
-        itokenid: 1,
+        itokenid: new Date().getMilliseconds(),
         iowner: address,
         itokenMetadata: tMetadata,
         iroyalties: [
@@ -126,14 +104,4 @@ export const TezosState = () => {
         console.log('off: ', onFulfilled);
       });
   };
-
-  return {
-    activeWallet,
-    walletAddress,
-    disconnectWallet,
-    userBalance,
-    setOriginate,
-    getLocalStorage,
-    setMint,
-  };
-};
+}

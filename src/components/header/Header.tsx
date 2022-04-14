@@ -5,7 +5,11 @@ import DarkMode from './DarkMode';
 
 import ConnectButton from '../ConnectWallet';
 
-const Header = () => {
+type props = {
+  TezosState?: any;
+};
+
+const Header = ({ TezosState }: props) => {
   const { pathname } = useLocation();
 
   const headerRef = useRef(null);
@@ -135,7 +139,7 @@ const Header = () => {
                     </div>
                   </div>
                   <div className="sc-btn-top mg-r-12" id="site-header">
-                    <ConnectButton />
+                    <ConnectButton TezosState={TezosState} />
                   </div>
 
                   <div className="admin_active" id="header_admin">

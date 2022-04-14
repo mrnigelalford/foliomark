@@ -12,17 +12,26 @@ import Ranking from './Ranking';
 import NoResult from './NoResult';
 import FAQ from './FAQ';
 import ContactPage from './Contact';
+import Tezos from '../State/Tezos';
+
+const TezosState = new Tezos();
 
 const routes = [
-  { path: '/', component: <Home /> },
+  { path: '/', component: <Home TezosState={TezosState} /> },
   { path: '/explore', component: <ExplorePage /> },
-  { path: '/live-auctions', component: <LiveAuctions /> },
-  { path: '/item-details', component: <ItemDetailsPage /> },
+  {
+    path: '/live-auctions',
+    component: <LiveAuctions />,
+  },
+  {
+    path: '/item-details',
+    component: <ItemDetailsPage />,
+  },
   { path: '/activity', component: <ActivityPage /> },
   { path: '/blog-details', component: <BlogDetails /> },
   { path: '/help-center', component: <HelpCenter /> },
   { path: '/authors', component: <AuthorsPage /> },
-  { path: '/create-item', component: <CreateItem /> },
+  { path: '/create-item', component: <CreateItem TezosState={TezosState} /> },
   { path: '/edit-profile', component: <EditProfile /> },
   { path: '/ranking', component: <Ranking /> },
   { path: '/no-result', component: <NoResult /> },

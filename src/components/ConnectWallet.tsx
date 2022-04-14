@@ -1,23 +1,39 @@
-import { useState } from 'react';
-import { TezosState } from '../State/Tezos';
+import { BeaconWallet } from '@taquito/beacon-wallet';
+import { useEffect, useState } from 'react';
+import Tezos from '../State/Tezos';
 
-const ConnectButton = (): JSX.Element => {
+type props = {
+  TezosState: Tezos;
+};
+
+const ConnectButton = ({ TezosState }: props): JSX.Element => {
   const [loadingNano, setLoadingNano] = useState<boolean>(false);
-  const [localUserAddress, setLocalUserAddress] = useState<string>('');
-  const { walletAddress, disconnectWallet } = TezosState();
+  const [wallet, setWallet] = useState<BeaconWallet>(undefined);
+  const [address, setAddress] = useState<string>();
 
-  walletAddress.subscribe({
-    next: (u) => setLocalUserAddress(u),
-  });
+  const getAddress = async () => {
+    const { address } = await TezosState.wallet.client.getActiveAccount();
+    setAddress(address);
+  };
+
+  useEffect(() => {
+    setWallet(TezosState.wallet);
+    getAddress();
+  }, [TezosState]);
 
   const ConnectButtons = () => (
     <div>
-      <button disabled className="button" onClick={() => {}}>
+      <button className="button" onClick={TezosState.setState}>
         <span>
-          <i className="fas fa-wallet"></i>&nbsp; Connect with wallet
+          <i className="fas fa-wallet"></i>&nbsp; Connect Wallet
         </span>
       </button>
-      <button className="button" disabled={loadingNano} onClick={() => {}}>
+      <button
+        style={{ display: 'none' }}
+        className="button"
+        disabled={loadingNano}
+        onClick={() => {}}
+      >
         {loadingNano ? (
           <span>
             <i className="fas fa-spinner fa-spin"></i>&nbsp; Loading, please
@@ -34,8 +50,8 @@ const ConnectButton = (): JSX.Element => {
 
   const DisconnectButton = () => (
     <div>
-      <p>{localUserAddress}</p>
-      <button className="button" onClick={disconnectWallet}>
+      <p>{address}</p>
+      <button className="button" onClick={TezosState.disconnectWallet}>
         <i className="fas fa-times"></i>&nbsp; Disconnect wallet
       </button>
     </div>
@@ -43,7 +59,7 @@ const ConnectButton = (): JSX.Element => {
 
   return (
     <div className="buttons">
-      {localUserAddress ? <DisconnectButton /> : <ConnectButtons />}
+      {wallet ? <DisconnectButton /> : <ConnectButtons />}
     </div>
   );
 };

@@ -12,7 +12,11 @@ import TodayPicks from '../components/layouts/home-2/TodayPicks';
 import { useQuery } from '@apollo/client';
 import { GET_AUCTIONS } from '../graphql/auctions';
 
-const Home = () => {
+type props = {
+  TezosState: any;
+};
+
+const Home = ({ TezosState }: props) => {
   const { data } = useQuery(GET_AUCTIONS);
   const [auctions, setAuctions] = React.useState([]);
 
@@ -24,7 +28,7 @@ const Home = () => {
 
   return (
     <div className="home-2">
-      <Header />
+      <Header TezosState={TezosState} />
       <SliderStyle1 data={heroSliderData} />
       <Create />
       {auctions.length && <LiveAuction data={auctions} />}
