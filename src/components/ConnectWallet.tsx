@@ -4,7 +4,7 @@ import { TezosState } from '../State/Tezos';
 const ConnectButton = (): JSX.Element => {
   const [loadingNano, setLoadingNano] = useState<boolean>(false);
   const [localUserAddress, setLocalUserAddress] = useState<string>('');
-  const { setWallet, walletAddress, disconnectWallet } = TezosState();
+  const { walletAddress, disconnectWallet } = TezosState();
 
   walletAddress.subscribe({
     next: (u) => setLocalUserAddress(u),
@@ -12,12 +12,12 @@ const ConnectButton = (): JSX.Element => {
 
   const ConnectButtons = () => (
     <div>
-      <button className="button" onClick={setWallet}>
+      <button disabled className="button" onClick={() => {}}>
         <span>
           <i className="fas fa-wallet"></i>&nbsp; Connect with wallet
         </span>
       </button>
-      <button className="button" disabled={loadingNano} onClick={setWallet}>
+      <button className="button" disabled={loadingNano} onClick={() => {}}>
         {loadingNano ? (
           <span>
             <i className="fas fa-spinner fa-spin"></i>&nbsp; Loading, please

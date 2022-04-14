@@ -86,7 +86,7 @@ const CreateItem = () => {
   const [rawImg, setRawImg] = React.useState<File[]>();
   const [address, setAddress] = React.useState<string>();
 
-  const { setOriginate, walletAddress, setMintOrg } = TezosState();
+  const { setOriginate, walletAddress, setMint } = TezosState();
 
   walletAddress.subscribe({
     next: (a) => setAddress(a),
@@ -363,6 +363,7 @@ const CreateItem = () => {
                     Ship It!
                   </h4>
                   <Button
+                    disabled
                     style={{
                       width: '20%',
                       fontSize: '1.4em',
@@ -382,7 +383,7 @@ const CreateItem = () => {
                       fontWeight: 'bold',
                       lineHeight: '2.5em',
                     }}
-                    onClick={setMintOrg}
+                    onClick={setMint}
                   >
                     Mint It!
                   </Button>

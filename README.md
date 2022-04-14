@@ -61,6 +61,7 @@ ratbatkat: https://backend.kukai.network/file/hffkpew5xf4kppkd5ffmscgicsna5j_raw
 [archetype](https://docs.archetype-lang.org/contract-library/tokens/fa-1.2/formal-properties)
 [Taquito Documentation](https://tezostaquito.io/docs/quick_start)
 [Michelson Reference](https://liquidity-lang.org/doc/reference/michelson.html?highlight=if_left)
+[Tezos gitlab](https://tezos.gitlab.io/api/errors.html)
 
 ### Future Improvments
 
@@ -81,3 +82,12 @@ tz1hpJydx7Y3vAcQSuXM449SH8J3cgXhC5bX
 
 tezos-client
 ithacanet alias = iF | tz1ZysHE7iHHeuHuZMuzvzJAd7gvyW9kpvDp
+
+test user: tz1hpJydx7Y3vAcQSuXM449SH8J3cgXhC5bX
+
+test contract:
+KT1Bp1rpSTQQLetHRVoi2wcPn5pMuNqe9sRX
+
+methods that work:
+`add_minter(address)`
+`originate` works
