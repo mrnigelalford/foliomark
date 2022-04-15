@@ -77,7 +77,7 @@ All work is captured here, curent, backlog and anything important that's happeni
 ithacanet wallet seed:
 gate swift coconut mean laundry luxury waste light confirm vote van report napkin harsh enroll embrace matrix human ribbon belt rug intact topple phone
 
-public address
+ithacanet public address
 tz1hpJydx7Y3vAcQSuXM449SH8J3cgXhC5bX
 
 tezos-client

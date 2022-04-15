@@ -15,7 +15,7 @@ export default class Tezos {
   Tezos: TezosToolkit;
   wallet: BeaconWallet;
   rpcUrl = 'https://ithacanet.ecadinfra.com';
-  contractAddress = 'KT1UpoPfyxmVrCEnvNGGPXa5zz7JmRk28y9j'; // Ithacanet location of the smart contract
+  contractAddress = 'KT1Vm3EJiq2J4TbLexUZ19teeq71zy4moiZx'; // Ithacanet location of the smart contract
 
   setState = async () => {
     this.Tezos = new TezosToolkit(this.rpcUrl);
@@ -42,6 +42,7 @@ export default class Tezos {
   };
 
   setOriginate = async () => {
+    if (!this.wallet) await this.setState();
     const { address } = await this.wallet.client.getActiveAccount();
 
     if (address) {
@@ -64,6 +65,7 @@ export default class Tezos {
           })
           .then((contract) => {
             console.log(`Origination completed for `, contract);
+            this.contractAddress = contract.address;
           })
           .catch((error) => console.log('Error: ', error));
       }
@@ -85,11 +87,22 @@ export default class Tezos {
     const ipfsData = await pinFileToIPFS(nft);
     const tMetadata = new MichelsonMap();
 
-    tMetadata.set(`ipfs://${ipfsData.IpfsHash}`, '');
+    console.log('nft: ', nft.quantity);
+
+    tMetadata.set('title', nft.title);
+    tMetadata.set('price', nft.price.toString());
+    tMetadata.set('category', nft.category);
+    tMetadata.set('description', nft.description);
+    tMetadata.set('royalties', JSON.stringify(nft.royalties));
+    tMetadata.set('quantity', nft.quantity.toString());
+    tMetadata.set('license', nft.license);
+    tMetadata.set('token', nft.token);
+    tMetadata.set('ipfs', `ipfs://${ipfsData.IpfsHash}`);
 
     contract.methodsObject
       .mint({
         itokenid: new Date().getMilliseconds(),
+        iamount: nft.quantity,
         iowner: address,
         itokenMetadata: tMetadata,
         iroyalties: [
@@ -101,7 +114,7 @@ export default class Tezos {
       })
       .send()
       .then((onFulfilled) => {
-        console.log('off: ', onFulfilled);
+        console.log('call complete: ', onFulfilled);
       });
   };
 }

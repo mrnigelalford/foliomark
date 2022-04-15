@@ -44,35 +44,6 @@ const getBase64 = (file) => {
   });
 };
 
-const uploadServerURL = process.env.uploadServer;
-
-const getBucketImageAddress = (
-  files: Array<File>
-): Promise<{ message: string; data: string }> => {
-  return new Promise((resolve, reject) => {
-    var formData: any = new FormData();
-    var xhr = new XMLHttpRequest();
-    formData.append('file', files[0]);
-
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4) {
-        if (xhr.status >= 200) {
-          console.log('upload success: ', xhr.responseText);
-          resolve(JSON.parse(xhr.response));
-        } else {
-          reject(xhr.response);
-        }
-      }
-    };
-    xhr.open(
-      'POST',
-      'https://upload-server-dot-foliomark.uc.r.appspot.com/uploads',
-      true
-    );
-    xhr.send(formData);
-  });
-};
-
 type props = {
   TezosState: Tezos;
 };
@@ -88,7 +59,6 @@ const CreateItem = ({ TezosState }: props) => {
   const [royaltyPercent, setRoyaltyPercent] = React.useState(0);
   const [img, setImg] = React.useState<string>();
   const [rawImg, setRawImg] = React.useState<File[]>();
-  const [address, setAddress] = React.useState<string>();
 
   const onFileInputChange = (e) => {
     if (e) {
@@ -104,12 +74,17 @@ const CreateItem = ({ TezosState }: props) => {
     price,
     category,
     description,
-    royalties: royaltyPercent,
+    royalties: { royaltyPercent, royaltyAddress },
     quantity,
     license,
     fullImg: img,
     token: Token.XTZ,
     rawImg,
+  };
+
+  const handleChange = (e) => {
+    setQuantity(e.target.value);
+    console.log('e: ', e.target.value);
   };
 
   return (
@@ -251,9 +226,7 @@ const CreateItem = ({ TezosState }: props) => {
                         <input
                           type="number"
                           placeholder={quantity.toString()}
-                          onBlur={(e) =>
-                            setQuantity(Number(e.target.textContent))
-                          }
+                          onBlur={handleChange}
                           style={{ marginTop: '1.25em' }}
                         />
                       </div>
@@ -361,7 +334,6 @@ const CreateItem = ({ TezosState }: props) => {
                     Ship It!
                   </h4>
                   <Button
-                    disabled
                     style={{
                       width: '20%',
                       fontSize: '1.4em',

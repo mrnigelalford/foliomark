@@ -12,7 +12,7 @@ const ConnectButton = ({ TezosState }: props): JSX.Element => {
   const [address, setAddress] = useState<string>();
 
   const getAddress = async () => {
-    const { address } = await TezosState.wallet.client.getActiveAccount();
+    const { address } = await TezosState?.wallet?.client?.getActiveAccount();
     setAddress(address);
   };
 

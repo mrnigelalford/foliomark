@@ -16,4 +16,10 @@ export interface NFT {
   views?: number;
   description: string;
   rawImg?: File[];
+  quantity?: number;
+  royalties?: {
+    royaltyPercent: number;
+    royaltyAddress: string;
+  };
+  license?: string;
 }
