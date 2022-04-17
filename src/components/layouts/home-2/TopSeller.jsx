@@ -21,7 +21,7 @@ const TopSeller = (props) => {
         <div className="row">
           <div className="col-md-12">
             <div className="heading-live-auctions">
-              <h2 className="tf-title mb-25">Top Seller</h2>
+              <h2 className="tf-title mb-25">Top Sellers</h2>
             </div>
           </div>
           <div className="col-md-12">
