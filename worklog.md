@@ -4,11 +4,13 @@
 
 ### Todo Items
 
-[] read contracts minted from this contract
-[] pass data to front-end
+[] append more metadata (username, profile pic, tags/categories, wishlist?)
+[] convert book
+[]
 
 ### Backlog
 
+[] v2 -> move logic to Graphql and create pubsub system
 [] contract metadata should be ready for consumption downstream
 [] can we make origination be cheaper (0.755 ꜩ fee)
 [] create an admin address this should be hardcoded to help prevent users from overtaking you
@@ -21,6 +23,9 @@
 
 ## DONE
 
+[] every component will query for data from tzkt.io api [done]
+[] pass data to front-end [done]
+[] read contracts minted from this contract [done]
 add form metadata to NFT[done]
 read localstorage beacon info [done]
 smart contract origination [done]
